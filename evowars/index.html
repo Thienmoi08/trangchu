@@ -43,13 +43,17 @@
         #leaderboard { position: absolute; top: 15px; right: 15px; background: rgba(10, 12, 26, 0.9); border: 2px solid #00ffcc; padding: 15px; font-size: 1.2rem; min-width: 250px; box-shadow: 0 0 15px rgba(0,255,204,0.3); }
         #leaderboard h3 { color: #ff0055; border-bottom: 2px solid #00ffcc; margin-bottom: 8px; padding-bottom: 5px; font-size: 1.3rem; }
         .lb-item { margin-bottom: 4px; font-weight: bold; }
+        
+        /* HIỂU THỊ TRẠNG THÁI BẤT TỬ TRÊN ĐẦU PLAYER */
+        #imm-status { display: none; color: #ffff00; font-weight: bold; font-size: 1.5rem; background: rgba(0,0,0,0.7); padding: 5px 10px; border: 1px solid #ffff00; display: inline-block; margin-left: 10px; }
     </style>
 </head>
 <body>
 
 <div id="game-container">
     <div id="hud">
-        <div class="hud-text">CẤP ĐỘ: <span id="hud-level">1</span></div><br>
+        <div class="hud-text">CẤP ĐỘ: <span id="hud-level">1</span></div>
+        <div class="hud-text" id="imm-status">🛡️ BẤT TỬ</div><br>
         <div class="hud-text">NĂNG LƯỢNG: <span id="hud-exp">0</span></div>
         <div id="leaderboard">
             <h3>BẢNG XẾP HẠNG</h3>
@@ -187,36 +191,55 @@
             this.x = x; this.y = y; this.isBot = isBot; this.name = name;
             this.level = isBot ? Math.floor(Math.random() * 4) + 1 : userData.equippedSkin;
             this.exp = 0;
-            this.radius = 35 + this.level * 4; // Tăng nhẹ kích thước nhân vật
+            this.radius = 35 + this.level * 4; 
             this.baseSpeed = 3.8 - (this.level * 0.08);
             this.speed = this.baseSpeed;
-            this.angle = 0;
+            this.angle = Math.random() * Math.PI * 2;
             this.boost = 1.0;
+            this.isBoosting = false;
             
-            // TIMING TẤN CÔNG (600ms cả quá trình, 300ms vung ra, 300ms thu về)
+            // LOGIC HỒI SINH MỚI: 3000ms Bất tử, 5000ms Tốc độ x2
+            this.immunityTimer = 3000; 
+            this.spawnBoostTimer = 5000;
+
             this.isAttacking = false;
             this.attackTime = 0; 
-            this.attackDuration = 600; // 600 miligiây
-            this.currentSwingAngle = 0; // Góc quay thực tế của vũ khí khi vụt
+            this.currentSwingAngle = 0;
 
-            this.weaponType = (this.level % 2 === 0) ? 2 : 1; 
+            this.weaponType = 2; 
             this.weaponLength = 45 + this.level * 16;
-            this.target = null; this.botActionTimer = 0;
+
+            this.botPersonality = isBot ? Math.floor(Math.random() * 3) : 0;
+            this.botActionTimer = 0;
+            this.randomTargetX = Math.random() * worldSize;
+            this.randomTargetY = Math.random() * worldSize;
         }
 
         update(deltaTime) {
+            // Giảm dần bộ đếm thời gian hiệu ứng hồi sinh theo thời gian thực
+            if (this.immunityTimer > 0) this.immunityTimer -= deltaTime;
+            if (this.spawnBoostTimer > 0) this.spawnBoostTimer -= deltaTime;
+
+            // Xử lý tiêu hao năng lượng khi kích hoạt Boost chuột phải thông thường
             let maxBoostBonus = (0.5 - (this.level * 0.02)); 
             if (maxBoostBonus < 0.2) maxBoostBonus = 0.2;
             
-            if (!this.isBot && mouse.rightDown && this.exp > 2) {
-                this.boost = 1 + maxBoostBonus; this.exp -= 0.15;
-            } else { this.boost = 1.0; }
+            let normalBoost = 1.0;
+            if (this.isBot) {
+                if (this.isBoosting && this.exp > 2) { normalBoost = 1 + maxBoostBonus; this.exp -= 0.15; }
+            } else {
+                if (mouse.rightDown && this.exp > 2) { normalBoost = 1 + maxBoostBonus; this.exp -= 0.15; }
+            }
+
+            // Nhân đôi (x2) tốc độ nếu đang trong thời gian hiệu ứng spawnBoostTimer
+            let spawnBoostMultiplier = (this.spawnBoostTimer > 0) ? 2.0 : 1.0;
 
             let upgradeSpeedBonus = !this.isBot ? (userData.upgrades.speed * 0.01) : 0;
-            this.speed = (this.baseSpeed * this.boost) * (1 + upgradeSpeedBonus);
+            this.speed = (this.baseSpeed * normalBoost * spawnBoostMultiplier) * (1 + upgradeSpeedBonus);
 
-            if (this.isBot) { this.handleBotAI(); } 
-            else {
+            if (this.isBot) { 
+                this.handleBotAI(); 
+            } else {
                 let dx = mouse.x - (canvas.width / 2);
                 let dy = mouse.y - (canvas.height / 2);
                 if (Math.hypot(dx, dy) > 10) {
@@ -226,24 +249,24 @@
                 }
             }
 
+            if (this.isBot) {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+            }
+
             this.x = Math.max(this.radius, Math.min(worldSize - this.radius, this.x));
             this.y = Math.max(this.radius, Math.min(worldSize - this.radius, this.y));
 
-            // LOGIC XỬ LÝ VÙNG KIẾM THEO THỜI GIAN THỰC (CHẬM & CHUẨN 600MS)
+            // VÒNG ĐỜI VUNG KIẾM NỘI SUY
             if (this.isAttacking) {
                 this.attackTime += deltaTime;
-                
                 if (this.attackTime <= 300) {
-                    // 300ms đầu: Từ vị trí nghỉ tiến về sát kim 12h (Góc -Math.PI/2 tương đối là 0 rad hướng vung)
-                    // Chúng ta tính toán nội suy mượt mà từ 0 đến 1
                     let progress = this.attackTime / 300;
-                    this.currentSwingAngle = -progress * (Math.PI * 0.62); // Vụt mạnh lên hướng trước mặt
+                    this.currentSwingAngle = -progress * (Math.PI * 0.62);
                 } else if (this.attackTime <= 600) {
-                    // 300ms sau: Thu kiếm từ kim 12h lùi về vị trí nghỉ cũ
                     let progress = (this.attackTime - 300) / 300;
                     this.currentSwingAngle = -(1 - progress) * (Math.PI * 0.62);
                 } else {
-                    // Kết thúc hoàn toàn chu kỳ 600ms -> Trở về trạng thái tĩnh hoàn toàn mới được vụt tiếp
                     this.isAttacking = false;
                     this.attackTime = 0;
                     this.currentSwingAngle = 0;
@@ -253,33 +276,61 @@
 
         handleBotAI() {
             this.botActionTimer--;
-            if (!this.target || this.botActionTimer <= 0) {
-                let nearest = null; let minDist = 700;
-                entities.forEach(e => {
-                    if (e === this) return;
-                    let d = Math.hypot(e.x - this.x, e.y - this.y);
-                    if (d < minDist) { minDist = d; nearest = e; }
-                });
-                if (nearest) { this.target = nearest; this.botActionTimer = 40; } 
-                else {
-                    let nearFood = foods[Math.floor(Math.random() * foods.length)];
-                    if (nearFood) this.target = nearFood; this.botActionTimer = 30;
+
+            let nearestEnemy = null;
+            let minDist = 600;
+            entities.forEach(e => {
+                if (e === this) return;
+                let d = Math.hypot(e.x - this.x, e.y - this.y);
+                if (d < minDist) { minDist = d; nearestEnemy = e; }
+            });
+
+            if (nearestEnemy) {
+                let tx = nearestEnemy.x - this.x;
+                let ty = nearestEnemy.y - this.y;
+                let actualDist = Math.hypot(tx, ty);
+
+                if (this.botPersonality === 2 && nearestEnemy.level > this.level) {
+                    this.angle = Math.atan2(ty, tx) + Math.PI; 
+                    this.isBoosting = true;
+                    if (this.botActionTimer <= 0) this.botActionTimer = 20;
+                    return;
+                } 
+                
+                if (this.botPersonality === 0 || (this.botPersonality === 1 && actualDist < 200) || nearestEnemy.level <= this.level) {
+                    this.angle = Math.atan2(ty, tx);
+                    this.isBoosting = (actualDist > this.weaponLength + 50 && Math.random() < 0.3);
+
+                    if (actualDist < this.weaponLength + nearestEnemy.radius + 15) {
+                        this.attack();
+                    }
+                    if (this.botActionTimer <= 0) this.botActionTimer = 30;
+                    return;
                 }
             }
-            if (this.target) {
-                let tx = this.target.x - this.x; let ty = this.target.y - this.y;
-                this.angle = Math.atan2(ty, tx);
-                let dist = Math.hypot(tx, ty);
-                if (this.target instanceof Entity && dist < this.weaponLength + this.target.radius + 15) {
-                    this.attack(); // Bot kích hoạt tấn công nếu hồi chiêu xong
+
+            if (this.botActionTimer <= 0) {
+                this.isBoosting = false;
+                if (foods.length > 0 && Math.random() < 0.7) {
+                    let randomFood = foods[Math.floor(Math.random() * foods.length)];
+                    this.randomTargetX = randomFood.x;
+                    this.randomTargetY = randomFood.y;
+                } else {
+                    this.randomTargetX = this.x + (Math.random() * 600 - 300);
+                    this.randomTargetY = this.y + (Math.random() * 600 - 300);
                 }
-                this.x += Math.cos(this.angle) * this.speed;
-                this.y += Math.sin(this.angle) * this.speed;
+                this.botActionTimer = Math.floor(Math.random() * 60) + 40;
+            }
+
+            let dx = this.randomTargetX - this.x;
+            let dy = this.randomTargetY - this.y;
+            if (Math.hypot(dx, dy) > 10) {
+                this.angle = Math.atan2(dy, dx);
             }
         }
 
         attack() {
-            if (this.isAttacking) return; // KHÔNG ĐƯỢC VỤT TIẾP khi đang trong chu kỳ 600ms
+            if (this.isAttacking) return; 
             this.isAttacking = true;
             this.attackTime = 0;
             if (!this.isBot && loadedSounds[this.level]) {
@@ -292,27 +343,42 @@
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);
 
-            // CẮT HÌNH TRÒN TỪ KHUNG ẢNH VUÔNG
-            ctx.save();
-            ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.clip();
-            let assetId = this.level;
-            if (assetId > 1 && loadedImages.nhanvat[assetId]) {
-                ctx.drawImage(loadedImages.nhanvat[assetId], -this.radius, -this.radius, this.radius*2, this.radius*2);
-            } else {
-                ctx.fillStyle = this.isBot ? '#ff0055' : '#00ffcc';
-                ctx.fillRect(-this.radius, -this.radius, this.radius*2, this.radius*2);
-                ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(this.radius/3, -this.radius/3, 6, 0, Math.PI*2); ctx.fill();
+            // HIỆU ỨNG NHẤP NHÁY MÀU VÀNG KHI ĐANG BẤT TỬ
+            let skipDrawSkin = false;
+            if (this.immunityTimer > 0) {
+                // Nhấp nháy theo chu kỳ mili-giây để người chơi dễ nhận biết
+                if (Math.floor(this.immunityTimer / 100) % 2 === 0) {
+                    ctx.fillStyle = 'rgba(255, 215, 0, 0.6)'; // Màu vàng kim phát sáng bảo vệ
+                    ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fill();
+                    skipDrawSkin = true;
+                }
             }
-            ctx.restore();
 
-            ctx.strokeStyle = this.isBot ? 'rgba(255,0,85,0.8)' : 'rgba(0,255,204,0.8)';
-            ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.stroke();
+            if (!skipDrawSkin) {
+                ctx.save();
+                ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.clip();
+                let assetId = this.level;
+                if (assetId > 1 && loadedImages.nhanvat[assetId]) {
+                    ctx.drawImage(loadedImages.nhanvat[assetId], -this.radius, -this.radius, this.radius*2, this.radius*2);
+                } else {
+                    ctx.fillStyle = this.isBot ? '#ff0055' : '#00ffcc';
+                    ctx.fillRect(-this.radius, -this.radius, this.radius*2, this.radius*2);
+                    ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(this.radius/3, -this.radius/3, 6, 0, Math.PI*2); ctx.fill();
+                }
+                ctx.restore();
+            }
 
-            // VẼ VŨ KHÍ QUAY ĐỘNG THEO GÓC NỘI SUY (SWING ANGLE)
+            // Vòng viền phát sáng đặc trưng
+            ctx.strokeStyle = this.immunityTimer > 0 ? '#ffff00' : (this.isBot ? 'rgba(255,0,85,0.8)' : 'rgba(0,255,204,0.8)');
+            ctx.lineWidth = this.immunityTimer > 0 ? 5 : 4; 
+            ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.stroke();
+
+            // VẼ VŨ KHÍ TIẾP TUYẾN
             const drawSingleWeapon = (baseAngleOffset) => {
                 ctx.save();
                 ctx.rotate(baseAngleOffset + this.currentSwingAngle);
                 let gap = 5;
+                let assetId = this.level;
                 if (loadedImages.vukhi[assetId] && assetId > 1) {
                     ctx.drawImage(loadedImages.vukhi[assetId], this.radius + gap, -7, this.weaponLength, 14);
                 } else {
@@ -321,33 +387,27 @@
                 ctx.restore();
             };
 
-            // Hướng 8 giờ (Vũ khí 1 tay)
-            if (this.weaponType === 1 || this.weaponType === 2) drawSingleWeapon(Math.PI * 0.65);
-            // Hướng 4 giờ (Vũ khí bổ trợ 2 tay)
-            if (this.weaponType === 2) drawSingleWeapon(-Math.PI * 0.65);
+            drawSingleWeapon(Math.PI * 0.65);
+            drawSingleWeapon(-Math.PI * 0.65);
 
             ctx.restore();
 
-            // Tên hiển thị to, rõ nét hơn
             ctx.fillStyle = '#fff';
             ctx.font = 'bold 15px Courier New';
             ctx.textAlign = 'center';
             ctx.fillText(`${this.name} [Lv.${this.level}]`, this.x, this.y - this.radius - 12);
         }
 
-        // TÍNH TOÁN ĐẦU VŨ KHÍ CHÍNH XÁC ĐỂ CHECK VA CHẠM KHHI CHÉM
         getWeaponTipPositions() {
             let tips = [];
             let gap = 5;
             let reach = this.radius + gap + this.weaponLength;
-
             const addTip = (baseAngleOffset) => {
                 let finalAngle = this.angle + baseAngleOffset + this.currentSwingAngle;
                 tips.push({ x: this.x + Math.cos(finalAngle) * reach, y: this.y + Math.sin(finalAngle) * reach });
             };
-
-            if (this.weaponType === 1 || this.weaponType === 2) addTip(Math.PI * 0.65);
-            if (this.weaponType === 2) addTip(-Math.PI * 0.65);
+            addTip(Math.PI * 0.65);
+            addTip(-Math.PI * 0.65);
             return tips;
         }
 
@@ -360,7 +420,6 @@
                     this.level++;
                     this.radius = 35 + this.level * 4;
                     this.weaponLength = 45 + this.level * 16;
-                    this.weaponType = (this.level % 2 === 0) ? 2 : 1;
                 }
             }
         }
@@ -382,11 +441,11 @@
         player = new Entity(worldSize / 2, worldSize / 2, false, "Bro Thiện 😎");
         entities = [player]; foods = [];
         
-        const botNames = ["Thập Tam Muội", "Sơn Tùng MTP", "Luffy G5", "Sát Thủ Đêm", "Bá Chủ Thách Đấu", "Sử Hộ Vương"];
-        for(let i=0; i<30; i++) {
+        const botNames = ["Gamer_Pro", "Hắc Công Tử", "King_Of_Arena", "Sát Thủ Đêm", "Trùm Cày Thuê", "Bóng Ma", "Vô Ảnh Kiếm", "Lão Hạc Code"];
+        for(let i=0; i<35; i++) {
             entities.push(new Entity(Math.random() * worldSize, Math.random() * worldSize, true, botNames[Math.floor(Math.random()*botNames.length)] + " " + Math.floor(Math.random()*99)));
         }
-        spawnFood(400); lastTime = performance.now(); gameActive = true;
+        spawnFood(500); lastTime = performance.now(); gameActive = true;
     }
 
     function gameOver(rank) {
@@ -402,16 +461,45 @@
     function loop(currentTime) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         let deltaTime = currentTime - lastTime;
-        if(deltaTime > 100) deltaTime = 16; // Chống lag nhảy cóc thời gian khi tab ẩn
+        if(deltaTime > 100) deltaTime = 16; 
         lastTime = currentTime;
 
         if (gameActive) {
+            // Hiển thị/Ẩn nhãn HUD BẤT TỬ của người chơi chính
+            document.getElementById('imm-status').style.display = (player.immunityTimer > 0) ? 'inline-block' : 'none';
             document.getElementById('hud-level').innerText = player.level;
             document.getElementById('hud-exp').innerText = Math.floor(player.exp);
 
             entities.forEach(e => e.update(deltaTime));
 
-            // Ăn hạt năng lượng
+            // THUẬT TOÁN KHẮC PHỤC LỖI DÍNH/HỢP NHẤT NHÂN VẬT (ANTI-CLUMPING SEPARATION ENGINE)
+            for (let i = 0; i < entities.length; i++) {
+                for (let j = i + 1; j < entities.length; j++) {
+                    let ent1 = entities[i];
+                    let ent2 = entities[j];
+                    
+                    let dx = ent2.x - ent1.x;
+                    let dy = ent2.y - ent1.y;
+                    let distance = Math.hypot(dx, dy);
+                    let minDist = ent1.radius + ent2.radius;
+
+                    // Nếu khoảng cách giữa 2 đứa nhỏ hơn tổng bán kính cơ thể -> Chạm nhau gây dính dính
+                    if (distance < minDist) {
+                        // Tránh chia cho 0 nếu trùng khít tọa độ gốc
+                        if (distance === 0) { dx = 1; dy = 0; distance = 1; }
+                        
+                        let overlap = minDist - distance;
+                        // Tính toán lực đẩy tách rời nhẹ (Tỷ lệ 50% cho mỗi bên phân bổ ra xa)
+                        let pushX = (dx / distance) * overlap * 0.5;
+                        let pushY = (dy / distance) * overlap * 0.5;
+
+                        ent1.x -= pushX; ent1.y -= pushY;
+                        ent2.x += pushX; ent2.y += pushY;
+                    }
+                }
+            }
+
+            // Thu thập hạt năng lượng thức ăn
             entities.forEach(e => {
                 for (let i = foods.length - 1; i >= 0; i--) {
                     if (Math.hypot(e.x - foods[i].x, e.y - foods[i].y) < e.radius + foods[i].radius) {
@@ -420,16 +508,20 @@
                 }
             });
 
-            // Xử lý chém va chạm trúng thân hình tròn
+            // Xử lý va chạm chém vũ khí
             for (let i = entities.length - 1; i >= 0; i--) {
                 let attacker = entities[i];
-                if (!attacker.isAttacking) continue; // Chỉ khi đang hoạt ảnh vung kiếm mới gây sát thương
+                if (!attacker.isAttacking) continue; 
 
                 let tips = attacker.getWeaponTipPositions();
                 tips.forEach(tip => {
                     for (let j = entities.length - 1; j >= 0; j--) {
                         if (i === j) continue;
                         let victim = entities[j];
+                        
+                        // BỎ QUA NẠN NHÂN NẾU ĐỐI THỦ ĐANG TRONG TRẠNG THÁI BẤT TỬ (Immunity)
+                        if (victim.immunityTimer > 0) continue;
+
                         if (Math.hypot(tip.x - victim.x, tip.y - victim.y) < victim.radius + 6) {
                             if (victim === player) {
                                 entities.sort((a,b) => b.level - a.level);
@@ -444,7 +536,7 @@
                 });
             }
 
-            // CAMERA THEO PLAYER
+            // CAMERA ENGINE
             ctx.save();
             ctx.translate(canvas.width / 2 - player.x, canvas.height / 2 - player.y);
 
@@ -462,7 +554,7 @@
             entities.forEach(e => e.draw());
             ctx.restore();
 
-            // BXH TO RÕ
+            // CẬP NHẬT BXH
             let sorted = [...entities].sort((a, b) => b.level - a.level || b.exp - a.exp);
             let lbList = document.getElementById('leaderboard-list'); lbList.innerHTML = "";
             sorted.slice(0, 5).forEach((e, idx) => {
