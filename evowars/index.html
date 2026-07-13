@@ -12,7 +12,7 @@
         #game-container { position: relative; width: 100%; height: 100%; }
         canvas { display: block; width: 100%; height: 100%; background: radial-gradient(circle, #101226 0%, #05060f 100%); }
 
-        /* MENU CHÍNH TO HƠN */
+        /* MENU CHÍNH */
         .ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 10; }
         .panel { background: rgba(10, 12, 26, 0.95); border: 4px double #00ffcc; box-shadow: 0 0 30px #00ffcc, inset 0 0 15px #ff0055; padding: 40px; width: 90%; max-width: 1000px; max-height: 90vh; overflow-y: auto; text-shadow: 0 0 5px #00ffcc; }
         h1 { text-align: center; font-size: 3.5rem; color: #ff0055; margin-bottom: 30px; text-transform: uppercase; border-bottom: 3px dashed #00ffcc; padding-bottom: 15px; letter-spacing: 2px; }
@@ -44,8 +44,11 @@
         #leaderboard h3 { color: #ff0055; border-bottom: 2px solid #00ffcc; margin-bottom: 8px; padding-bottom: 5px; font-size: 1.3rem; }
         .lb-item { margin-bottom: 4px; font-weight: bold; }
         
-        /* HIỂU THỊ TRẠNG THÁI BẤT TỬ TRÊN ĐẦU PLAYER */
         #imm-status { display: none; color: #ffff00; font-weight: bold; font-size: 1.5rem; background: rgba(0,0,0,0.7); padding: 5px 10px; border: 1px solid #ffff00; display: inline-block; margin-left: 10px; }
+
+        /* GIAO DIỆN RADAR MINIMAP GÓC DƯỚI BÊN TRÁI */
+        #minimap-container { position: absolute; bottom: 20px; left: 20px; width: 180px; height: 180px; background: rgba(5, 6, 15, 0.85); border: 3px double #00ffcc; box-shadow: 0 0 15px rgba(0,255,204,0.4); z-index: 5; border-radius: 50%; overflow: hidden; display: none; }
+        #minimapCanvas { width: 100%; height: 100%; display: block; }
     </style>
 </head>
 <body>
@@ -54,11 +57,15 @@
     <div id="hud">
         <div class="hud-text">CẤP ĐỘ: <span id="hud-level">1</span></div>
         <div class="hud-text" id="imm-status">🛡️ BẤT TỬ</div><br>
-        <div class="hud-text">NĂNG LƯỢNG: <span id="hud-exp">0</span></div>
+        <div class="hud-text">SỐ SỐNG SÓT: <span id="hud-alive">100</span>/100</div>
         <div id="leaderboard">
             <h3>BẢNG XẾP HẠNG</h3>
             <div id="leaderboard-list"></div>
         </div>
+    </div>
+
+    <div id="minimap-container">
+        <canvas id="minimapCanvas" width="180" height="180"></canvas>
     </div>
 
     <div id="menu-layer" class="ui-layer">
@@ -102,6 +109,8 @@
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const miniCanvas = document.getElementById('minimapCanvas');
+    const miniCtx = miniCanvas.getContext('2d');
 
     let userData = JSON.parse(localStorage.getItem('evowars_retro_data')) || {
         gold: 0,
@@ -182,25 +191,25 @@
 
     // --- GAME ENGINE LOGIC ---
     let gameActive = false;
-    let worldSize = 4000;
+    let worldSize = 2200; // THU NHỎ MAP: Đi xuyên từ đầu này sang đầu kia chuẩn 30 giây
     let player; let entities = []; let foods = [];
     let mouse = { x: 0, y: 0, isDown: false, rightDown: false };
 
     class Entity {
-        constructor(x, y, isBot = true, name = "Bot Pro") {
+        constructor(x, y, isBot = true, name = "Bot Pro", isRespawned = false) {
             this.x = x; this.y = y; this.isBot = isBot; this.name = name;
             this.level = isBot ? Math.floor(Math.random() * 4) + 1 : userData.equippedSkin;
             this.exp = 0;
             this.radius = 35 + this.level * 4; 
-            this.baseSpeed = 3.8 - (this.level * 0.08);
+            this.baseSpeed = 3.6 - (this.level * 0.08);
             this.speed = this.baseSpeed;
             this.angle = Math.random() * Math.PI * 2;
             this.boost = 1.0;
             this.isBoosting = false;
             
-            // LOGIC HỒI SINH MỚI: 3000ms Bất tử, 5000ms Tốc độ x2
-            this.immunityTimer = 3000; 
-            this.spawnBoostTimer = 5000;
+            // LOGIC FIX: CHỈ AI HỒI SINH (isRespawned == true) MỚI ĐƯỢC BUFF KHÓA ĐÒN + BẤT TỬ
+            this.immunityTimer = isRespawned ? 3000 : 0; 
+            this.spawnBoostTimer = isRespawned ? 5000 : 0;
 
             this.isAttacking = false;
             this.attackTime = 0; 
@@ -216,11 +225,9 @@
         }
 
         update(deltaTime) {
-            // Giảm dần bộ đếm thời gian hiệu ứng hồi sinh theo thời gian thực
             if (this.immunityTimer > 0) this.immunityTimer -= deltaTime;
             if (this.spawnBoostTimer > 0) this.spawnBoostTimer -= deltaTime;
 
-            // Xử lý tiêu hao năng lượng khi kích hoạt Boost chuột phải thông thường
             let maxBoostBonus = (0.5 - (this.level * 0.02)); 
             if (maxBoostBonus < 0.2) maxBoostBonus = 0.2;
             
@@ -231,7 +238,7 @@
                 if (mouse.rightDown && this.exp > 2) { normalBoost = 1 + maxBoostBonus; this.exp -= 0.15; }
             }
 
-            // Nhân đôi (x2) tốc độ nếu đang trong thời gian hiệu ứng spawnBoostTimer
+            // Nếu có spawnBoostTimer (hồi sinh) thì x2 tốc độ, bth thì tốc độ gốc 1.0
             let spawnBoostMultiplier = (this.spawnBoostTimer > 0) ? 2.0 : 1.0;
 
             let upgradeSpeedBonus = !this.isBot ? (userData.upgrades.speed * 0.01) : 0;
@@ -278,7 +285,7 @@
             this.botActionTimer--;
 
             let nearestEnemy = null;
-            let minDist = 600;
+            let minDist = 500;
             entities.forEach(e => {
                 if (e === this) return;
                 let d = Math.hypot(e.x - this.x, e.y - this.y);
@@ -301,7 +308,8 @@
                     this.angle = Math.atan2(ty, tx);
                     this.isBoosting = (actualDist > this.weaponLength + 50 && Math.random() < 0.3);
 
-                    if (actualDist < this.weaponLength + nearestEnemy.radius + 15) {
+                    // FIX LUẬT MỚI: Đang bất tử thì KHÔNG ĐƯỢC phép vung kiếm tấn công
+                    if (actualDist < this.weaponLength + nearestEnemy.radius + 15 && this.immunityTimer <= 0) {
                         this.attack();
                     }
                     if (this.botActionTimer <= 0) this.botActionTimer = 30;
@@ -316,8 +324,8 @@
                     this.randomTargetX = randomFood.x;
                     this.randomTargetY = randomFood.y;
                 } else {
-                    this.randomTargetX = this.x + (Math.random() * 600 - 300);
-                    this.randomTargetY = this.y + (Math.random() * 600 - 300);
+                    this.randomTargetX = this.x + (Math.random() * 500 - 250);
+                    this.randomTargetY = this.y + (Math.random() * 500 - 250);
                 }
                 this.botActionTimer = Math.floor(Math.random() * 60) + 40;
             }
@@ -330,7 +338,7 @@
         }
 
         attack() {
-            if (this.isAttacking) return; 
+            if (this.isAttacking || this.immunityTimer > 0) return; // Đang bất tử -> KHÓA TẤN CÔNG
             this.isAttacking = true;
             this.attackTime = 0;
             if (!this.isBot && loadedSounds[this.level]) {
@@ -343,12 +351,10 @@
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angle);
 
-            // HIỆU ỨNG NHẤP NHÁY MÀU VÀNG KHI ĐANG BẤT TỬ
             let skipDrawSkin = false;
             if (this.immunityTimer > 0) {
-                // Nhấp nháy theo chu kỳ mili-giây để người chơi dễ nhận biết
                 if (Math.floor(this.immunityTimer / 100) % 2 === 0) {
-                    ctx.fillStyle = 'rgba(255, 215, 0, 0.6)'; // Màu vàng kim phát sáng bảo vệ
+                    ctx.fillStyle = 'rgba(255, 215, 0, 0.6)'; 
                     ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fill();
                     skipDrawSkin = true;
                 }
@@ -368,12 +374,10 @@
                 ctx.restore();
             }
 
-            // Vòng viền phát sáng đặc trưng
             ctx.strokeStyle = this.immunityTimer > 0 ? '#ffff00' : (this.isBot ? 'rgba(255,0,85,0.8)' : 'rgba(0,255,204,0.8)');
             ctx.lineWidth = this.immunityTimer > 0 ? 5 : 4; 
             ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.stroke();
 
-            // VẼ VŨ KHÍ TIẾP TUYẾN
             const drawSingleWeapon = (baseAngleOffset) => {
                 ctx.save();
                 ctx.rotate(baseAngleOffset + this.currentSwingAngle);
@@ -435,23 +439,61 @@
         }
     }
 
+    // VẼ BẢN ĐỒ ĐỊNH VỊ RADAR MINIMAP
+    function drawMinimap() {
+        miniCtx.clearRect(0, 0, miniCanvas.width, miniCanvas.height);
+        
+        // Vẽ vòng tròn nền radar
+        miniCtx.fillStyle = "rgba(10, 12, 26, 0.8)";
+        miniCtx.beginPath(); miniCtx.arc(90, 90, 85, 0, Math.PI*2); miniCtx.fill();
+        miniCtx.strokeStyle = "#00ffcc"; miniCtx.lineWidth = 2; miniCtx.stroke();
+
+        // Tỷ lệ chuyển đổi từ map thực sang map nhỏ
+        let scale = 160 / worldSize; 
+
+        // Vẽ biên giới map thu nhỏ
+        miniCtx.strokeStyle = "rgba(255, 0, 85, 0.5)";
+        miniCtx.lineWidth = 2;
+        miniCtx.strokeRect(10, 10, worldSize * scale, worldSize * scale);
+
+        // Vẽ các thực thể lên radar
+        entities.forEach(e => {
+            let mapX = 10 + e.x * scale;
+            let mapY = 10 + e.y * scale;
+
+            if (e === player) {
+                // Người chơi chính: Chấm Xanh to phát sáng
+                miniCtx.fillStyle = "#00ffcc";
+                miniCtx.beginPath(); miniCtx.arc(mapX, mapY, 4, 0, Math.PI*2); miniCtx.fill();
+            } else {
+                // Bot: Chấm Đỏ nhỏ gọn
+                miniCtx.fillStyle = "#ff0055";
+                miniCtx.beginPath(); miniCtx.arc(mapX, mapY, 2, 0, Math.PI*2); miniCtx.fill();
+            }
+        });
+    }
+
     function startGame() {
         document.getElementById('menu-layer').style.display = 'none';
         document.getElementById('hud').style.display = 'block';
-        player = new Entity(worldSize / 2, worldSize / 2, false, "Bro Thiện 😎");
+        document.getElementById('minimap-container').style.display = 'block';
+        
+        // KHỞI TẠO ĐẦU TRẬN: TẤT CẢ TỐC ĐỘ BÌNH THƯỜNG (isRespawned = false)
+        player = new Entity(worldSize / 2, worldSize / 2, false, "Bro Thiện 😎", false);
         entities = [player]; foods = [];
         
         const botNames = ["Gamer_Pro", "Hắc Công Tử", "King_Of_Arena", "Sát Thủ Đêm", "Trùm Cày Thuê", "Bóng Ma", "Vô Ảnh Kiếm", "Lão Hạc Code"];
-        for(let i=0; i<35; i++) {
-            entities.push(new Entity(Math.random() * worldSize, Math.random() * worldSize, true, botNames[Math.floor(Math.random()*botNames.length)] + " " + Math.floor(Math.random()*99)));
+        for(let i=0; i<99; i++) {
+            entities.push(new Entity(Math.random() * worldSize, Math.random() * worldSize, true, botNames[Math.floor(Math.random()*botNames.length)] + " " + Math.floor(Math.random()*99), false));
         }
-        spawnFood(500); lastTime = performance.now(); gameActive = true;
+        spawnFood(250); lastTime = performance.now(); gameActive = true;
     }
 
     function gameOver(rank) {
         gameActive = false;
         document.getElementById('menu-layer').style.display = 'flex';
         document.getElementById('hud').style.display = 'none';
+        document.getElementById('minimap-container').style.display = 'none';
         let goldReward = rank === 1 ? 450 : (rank <= 3 ? 200 : (rank <= 10 ? 70 : 20));
         userData.gold += goldReward; saveUserData(); renderShop();
         alert(`KẾT QUẢ: Hạng ${rank}! Nhận ngay ${goldReward} Vàng.`);
@@ -465,34 +507,38 @@
         lastTime = currentTime;
 
         if (gameActive) {
-            // Hiển thị/Ẩn nhãn HUD BẤT TỬ của người chơi chính
             document.getElementById('imm-status').style.display = (player.immunityTimer > 0) ? 'inline-block' : 'none';
             document.getElementById('hud-level').innerText = player.level;
             document.getElementById('hud-exp').innerText = Math.floor(player.exp);
+            document.getElementById('hud-alive').innerText = entities.length;
+
+            // QUẢN LÝ SỐ LƯỢNG: Nếu tụt xuống dưới 90 con, tự động hồi sinh từng con một (Tối đa vẫn 100)
+            if (entities.length < 90) {
+                const botNames = ["Spawn_Pro", "Kẻ Hồi Sinh", "Bot_New", "Cyber_Ghost"];
+                // ĐẶT BIẾN `isRespawned = true` ĐỂ CHỈ CON NÀY ĐƯỢC BUFF KHÓA ĐÒN + TỐC ĐỘ X2
+                entities.push(new Entity(
+                    Math.random() * worldSize, 
+                    Math.random() * worldSize, 
+                    true, 
+                    botNames[Math.floor(Math.random()*botNames.length)] + " " + Math.floor(Math.random()*99), 
+                    true
+                ));
+            }
 
             entities.forEach(e => e.update(deltaTime));
 
-            // THUẬT TOÁN KHẮC PHỤC LỖI DÍNH/HỢP NHẤT NHÂN VẬT (ANTI-CLUMPING SEPARATION ENGINE)
+            // Thuật toán chống dính người
             for (let i = 0; i < entities.length; i++) {
                 for (let j = i + 1; j < entities.length; j++) {
-                    let ent1 = entities[i];
-                    let ent2 = entities[j];
-                    
-                    let dx = ent2.x - ent1.x;
-                    let dy = ent2.y - ent1.y;
+                    let ent1 = entities[i]; let ent2 = entities[j];
+                    let dx = ent2.x - ent1.x; let dy = ent2.y - ent1.y;
                     let distance = Math.hypot(dx, dy);
                     let minDist = ent1.radius + ent2.radius;
-
-                    // Nếu khoảng cách giữa 2 đứa nhỏ hơn tổng bán kính cơ thể -> Chạm nhau gây dính dính
                     if (distance < minDist) {
-                        // Tránh chia cho 0 nếu trùng khít tọa độ gốc
                         if (distance === 0) { dx = 1; dy = 0; distance = 1; }
-                        
                         let overlap = minDist - distance;
-                        // Tính toán lực đẩy tách rời nhẹ (Tỷ lệ 50% cho mỗi bên phân bổ ra xa)
                         let pushX = (dx / distance) * overlap * 0.5;
                         let pushY = (dy / distance) * overlap * 0.5;
-
                         ent1.x -= pushX; ent1.y -= pushY;
                         ent2.x += pushX; ent2.y += pushY;
                     }
@@ -511,7 +557,8 @@
             // Xử lý va chạm chém vũ khí
             for (let i = entities.length - 1; i >= 0; i--) {
                 let attacker = entities[i];
-                if (!attacker.isAttacking) continue; 
+                // NẾU KẺ TẤN CÔNG ĐANG TRONG TRẠNG THÁI BẤT TỬ -> KHÓA SÁT THƯƠNG (Không gây sát thương cho ai)
+                if (!attacker.isAttacking || attacker.immunityTimer > 0) continue; 
 
                 let tips = attacker.getWeaponTipPositions();
                 tips.forEach(tip => {
@@ -519,7 +566,7 @@
                         if (i === j) continue;
                         let victim = entities[j];
                         
-                        // BỎ QUA NẠN NHÂN NẾU ĐỐI THỦ ĐANG TRONG TRẠNG THÁI BẤT TỬ (Immunity)
+                        // Bỏ qua nếu nạn nhân đang bất tử
                         if (victim.immunityTimer > 0) continue;
 
                         if (Math.hypot(tip.x - victim.x, tip.y - victim.y) < victim.radius + 6) {
@@ -529,7 +576,6 @@
                             } else {
                                 attacker.addExp(victim.level * 45);
                                 entities.splice(j, 1);
-                                entities.push(new Entity(Math.random() * worldSize, Math.random() * worldSize, true));
                             }
                         }
                     }
@@ -561,6 +607,9 @@
                 let color = e === player ? '#00ffcc' : '#fff';
                 lbList.innerHTML += `<div class="lb-item" style="color: ${color}">${idx+1}. ${e.name} (Cấp ${e.level})</div>`;
             });
+
+            // Vẽ Radar Minimap góc trái liên tục
+            drawMinimap();
         }
         requestAnimationFrame(loop);
     }
