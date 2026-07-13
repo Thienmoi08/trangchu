@@ -1,1267 +1,717 @@
 <!DOCTYPE html>
-<html lang="vi" class="h-full">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MMOHub - Nền Tảng Tài Nguyên & Công Cụ Kiếm Tiền Online</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FF MODDING - PREMIUM KEY SHOP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        dark: {
-                            950: '#090d16',
-                            900: '#0f172a',
-                            800: '#1e293b',
-                            700: '#334155',
-                        },
-                        neon: {
-                            emerald: '#10b981',
-                            indigo: '#6366f1',
-                            rose: '#f43f5e'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #090d16;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-        .glow-effect {
-            animation: pulse-glow 3s infinite ease-in-out;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@400;500;700&display=swap');
+        .font-gaming { font-family: 'Orbitron', sans-serif; }
+        .font-text { font-family: 'Roboto', sans-serif; }
+        .neon-border-red { box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
+        .neon-border-green { box-shadow: 0 0 15px rgba(34, 197, 94, 0.6); }
+        .neon-text { text-shadow: 0 0 10px rgba(239, 68, 68, 0.8); }
+        .neon-text-green { text-shadow: 0 0 10px rgba(34, 197, 94, 0.8); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 3px; }
     </style>
 </head>
-<body class="bg-dark-950 text-slate-100 font-sans h-full flex flex-col md:flex-row overflow-hidden">
+<body class="bg-slate-950 text-gray-100 font-text selection:bg-red-600 selection:text-white overflow-x-hidden">
 
-    <!-- MOBILE HEADER -->
-    <header class="md:hidden flex items-center justify-between bg-dark-900 border-b border-slate-800 px-4 py-3 z-30">
-        <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <i class="fa-solid fa-coins text-white text-sm"></i>
+    <!-- Header / Navbar -->
+    <header class="border-b border-red-900/30 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-crosshairs text-red-500 text-2xl animate-pulse"></i>
+                <span class="font-gaming text-xl font-black tracking-widest text-red-500 neon-text">FF<span class="text-white">MODS</span></span>
             </div>
-            <span class="font-extrabold text-lg tracking-wider bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">MMOHUB</span>
+            <nav class="hidden md:flex space-x-8 font-gaming text-xs tracking-widest">
+                <a href="#simulator" class="hover:text-red-500 transition-all">TRẢI NGHIỆM MOD</a>
+                <a href="#features" class="hover:text-red-500 transition-all">TÍNH NĂNG</a>
+                <a href="#pricing" class="hover:text-red-500 transition-all">BẢNG GIÁ</a>
+                <a href="#status" class="hover:text-red-500 transition-all">TRẠNG THÁI</a>
+            </nav>
+            <a href="#pricing" class="font-gaming bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded text-xs font-bold tracking-wider transition-all transform hover:scale-105 neon-border-red">
+                MUA KEY VIP
+            </a>
         </div>
-        <button id="mobileMenuBtn" class="p-2 text-slate-400 hover:text-white transition-colors focus:outline-none">
-            <i class="fa-solid fa-bars text-xl"></i>
-        </button>
     </header>
 
-    <!-- SIDEBAR (Desktop & Mobile) -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-dark-900 border-r border-slate-800/80 z-40 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out flex flex-col justify-between">
-        <div>
-            <!-- Sidebar Brand Header -->
-            <div class="hidden md:flex items-center space-x-3 px-6 py-5 border-b border-slate-800/50">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-indigo-600 flex items-center justify-center shadow-md shadow-emerald-500/10">
-                    <i class="fa-solid fa-coins text-white text-base"></i>
-                </div>
-                <div>
-                    <span class="font-extrabold text-xl tracking-wider bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">MMOHUB</span>
-                    <span class="block text-[10px] text-slate-400 uppercase tracking-widest font-semibold">Pro Ecosystem</span>
-                </div>
-            </div>
-
-            <!-- Profile Info Quick Glance -->
-            <div class="px-6 py-5 border-b border-slate-800/50 bg-dark-950/40">
-                <div class="flex items-center space-x-3">
-                    <div class="relative">
-                        <img src="https://placehold.co/100x100/10b981/ffffff?text=TM" alt="Avatar" class="w-10 h-10 rounded-full border border-emerald-500/50 object-cover" onerror="this.src='https://placehold.co/40x40/090d16/ffffff?text=User'">
-                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-dark-900 rounded-full"></span>
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold text-slate-200">Thienmoi08</p>
-                        <p class="text-xs text-emerald-400 font-medium flex items-center gap-1">
-                            <i class="fa-solid fa-crown text-[10px]"></i> VIP Member
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navigation Links -->
-            <nav class="px-4 py-6 space-y-1">
-                <button onclick="switchTab('dashboard')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-emerald-400 bg-emerald-500/10 font-medium text-sm group" data-tab="dashboard">
-                    <i class="fa-solid fa-chart-line text-lg group-hover:scale-110 transition-transform"></i>
-                    <span>Bảng điều khiển</span>
-                </button>
-                
-                <button onclick="switchTab('store')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 font-medium text-sm group" data-tab="store">
-                    <i class="fa-solid fa-store text-lg group-hover:scale-110 transition-transform"></i>
-                    <span>Chợ Tài Nguyên MMO</span>
-                </button>
-
-                <button onclick="switchTab('tools')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 font-medium text-sm group" data-tab="tools">
-                    <i class="fa-solid fa-screwdriver-wrench text-lg group-hover:scale-110 transition-transform"></i>
-                    <span>Bộ Công Cụ Tiện Ích</span>
-                </button>
-
-                <button onclick="switchTab('guides')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 font-medium text-sm group" data-tab="guides">
-                    <i class="fa-solid fa-book-open text-lg group-hover:scale-110 transition-transform"></i>
-                    <span>Cẩm Nang Hướng Dẫn</span>
-                </button>
-
-                <button onclick="switchTab('referral')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 font-medium text-sm group" data-tab="referral">
-                    <i class="fa-solid fa-share-nodes text-lg group-hover:scale-110 transition-transform"></i>
-                    <span>Tiếp Thị Liên Kết</span>
-                </button>
-            </nav>
-        </div>
-
-        <!-- Sidebar footer info -->
-        <div class="p-4 border-t border-slate-800/50 bg-dark-950/20 text-center">
-            <p class="text-xs text-slate-500">Hỗ trợ 24/7 trực tuyến</p>
-            <div class="flex justify-center gap-3 mt-2">
-                <a href="https://t.me/" target="_blank" class="w-8 h-8 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 flex items-center justify-center transition-all">
-                    <i class="fa-brands fa-telegram"></i>
+    <!-- Hero Section -->
+    <section class="relative py-20 px-4 overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-950/30 via-slate-950 to-slate-950">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <span class="bg-red-500/10 border border-red-500/30 text-red-400 text-xs px-4 py-1.5 rounded-full font-gaming tracking-widest uppercase mb-6 inline-block">
+                <i class="fa-solid fa-shield-halved mr-1.5 text-red-500"></i> BYPASS CHỐNG BAN ĐỈNH CAO 2026
+            </span>
+            <h1 class="font-gaming text-5xl md:text-7xl font-black tracking-tight mb-6 bg-gradient-to-r from-white via-gray-300 to-red-500 bg-clip-text text-transparent">
+                PREMIUM <span class="text-red-500 neon-text">CHEEAT SYSTEM</span>
+            </h1>
+            <p class="text-gray-400 text-base md:text-lg mb-8 max-w-3xl mx-auto leading-relaxed">
+                Hệ thống Menu Mod tối tân dành riêng cho Free Fire Android & Emulator. Tích hợp đầy đủ các tính năng phá vỡ mọi giới hạn game, tối ưu hóa băng thông bypass an toàn.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#simulator" class="font-gaming bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded font-bold tracking-wider transition-all neon-border-red">
+                    <i class="fa-solid fa-gamepad mr-2"></i> TEST THỬ TÍNH NĂNG
                 </a>
-                <a href="#" class="w-8 h-8 rounded-lg bg-blue-600/10 hover:bg-blue-600/20 text-blue-400 flex items-center justify-center transition-all">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a href="#" class="w-8 h-8 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-headset"></i>
+                <a href="#pricing" class="font-gaming border border-slate-800 hover:border-red-500 bg-slate-900/50 hover:bg-slate-900 text-white px-8 py-4 rounded font-bold tracking-wider transition-all">
+                    <i class="fa-solid fa-shopping-cart mr-2"></i> BẢNG GIÁ KEY
                 </a>
             </div>
         </div>
-    </aside>
+    </section>
 
-    <!-- Overlay back for mobile sidebar -->
-    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black/60 z-30 transition-opacity"></div>
-
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 overflow-y-auto relative h-full flex flex-col focus:outline-none">
-        
-        <!-- TOP NAV-BAR -->
-        <header class="hidden md:flex items-center justify-between px-8 py-4 border-b border-slate-800/50 bg-dark-900/40 backdrop-blur-md sticky top-0 z-20">
+    <!-- Thống kê Live Notification ảo -->
+    <div class="max-w-7xl mx-auto px-4 mb-12">
+        <div class="bg-slate-900/50 border border-slate-900 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
-                <h1 id="pageTitle" class="text-xl font-bold text-white tracking-wide">Bảng Điều Khiển Hệ Thống</h1>
-                <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Hệ thống Online
-                </span>
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-ping"></div>
+                <span class="text-sm text-gray-400 font-gaming">TRẠNG THÁI MODULE: <span class="text-green-400 neon-text-green">AN TOÀN (UNDETECTED)</span></span>
             </div>
-            
-            <div class="flex items-center space-x-4">
-                <!-- Notifications Bell -->
-                <div class="relative group">
-                    <button class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/50 transition-all">
-                        <i class="fa-solid fa-bell text-lg"></i>
-                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border border-dark-900"></span>
-                    </button>
-                    <!-- Simple absolute popover on hover -->
-                    <div class="absolute right-0 top-full mt-2 w-72 bg-dark-900 border border-slate-800 rounded-xl shadow-xl p-4 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200 z-50">
-                        <h4 class="font-bold text-sm text-slate-200 mb-2 border-b border-slate-800 pb-2 flex justify-between items-center">
-                            <span>Thông báo mới</span>
-                            <span class="text-xs text-emerald-400 font-normal">Hôm nay</span>
-                        </h4>
-                        <div class="space-y-3 text-xs text-slate-400">
-                            <p class="hover:text-slate-200 transition-colors"><strong class="text-slate-300">⚡ Săn Airdrop:</strong> Update cẩm nang hướng dẫn Retroactive testnet layer 2 cực nóng.</p>
-                            <p class="hover:text-slate-200 transition-colors"><strong class="text-slate-300">🛒 Cập nhật Kho hàng:</strong> Vừa bổ sung 500+ Via Facebook cổ ngâm lâu phục vụ Ads.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="h-6 w-[1px] bg-slate-800"></div>
-                
-                <div class="flex items-center space-x-2 bg-dark-900/80 px-3 py-1.5 rounded-xl border border-slate-800">
-                    <i class="fa-solid fa-wallet text-slate-400"></i>
-                    <span class="text-xs text-slate-400 font-medium">Ví số dư:</span>
-                    <span class="text-xs text-emerald-400 font-bold">1,450,000₫</span>
-                    <button class="ml-1 p-1 bg-emerald-500 hover:bg-emerald-600 rounded text-white text-[10px] px-1.5 font-bold transition-all" onclick="showTopupModal()">Nạp</button>
-                </div>
+            <div id="live-notif" class="text-sm text-red-400 font-medium transition-all duration-500 font-gaming">
+                <i class="fa-solid fa-fire mr-1 text-red-500"></i> Khách hàng <span class="text-white font-bold">Hoang***</span> vừa mua Key VIP 7 Ngày!
             </div>
-        </header>
+        </div>
+    </div>
 
-        <!-- MAIN DYNAMIC CONTENT CONTAINER -->
-        <div class="flex-1 p-4 md:p-8">
-
-            <!-- TAB 1: DASHBOARD (Default) -->
-            <section id="tab-dashboard" class="tab-content space-y-6">
-                <!-- Banner Quick News -->
-                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-950/40 via-indigo-950/30 to-dark-900 border border-emerald-500/20 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl">
-                    <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl glow-effect"></div>
-                    <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl glow-effect"></div>
-                    
-                    <div class="space-y-3 z-10 text-center md:text-left">
-                        <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider">Hệ sinh thái MMO đỉnh cao</span>
-                        <h2 class="text-2xl md:text-3xl font-extrabold text-white leading-tight">Bắt Đầu Chiến Dịch Kiếm Tiền Online Ngay Hôm Nay!</h2>
-                        <p class="text-sm text-slate-400 max-w-xl">Cung cấp tài nguyên Proxy sạch, tài khoản tương tác cao, VPS ổn định kèm các tool tiện ích hỗ trợ đắc lực cho hành trình affiliate & cheat airdrop của bạn.</p>
-                        <div class="flex flex-wrap gap-3 justify-center md:justify-start pt-2">
-                            <button onclick="switchTab('store')" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-sm flex items-center gap-2">
-                                <i class="fa-solid fa-cart-shopping"></i> Mua Tài Nguyên
-                            </button>
-                            <button onclick="switchTab('tools')" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl transition-all border border-slate-700 text-sm flex items-center gap-2">
-                                <i class="fa-solid fa-cube"></i> Sử Dụng Tool Free
-                            </button>
-                        </div>
-                    </div>
-                    <div class="hidden lg:block z-10">
-                        <i class="fa-solid fa-hand-holding-dollar text-9xl text-emerald-500/20 drop-shadow"></i>
-                    </div>
-                </div>
-
-                <!-- Stats Counters Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-dark-900 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between shadow-md hover:border-slate-700/60 transition-all">
-                        <div>
-                            <span class="block text-xs text-slate-500 font-semibold uppercase tracking-wider">Tổng Đơn Hàng</span>
-                            <span class="text-2xl font-bold text-white mt-1 block">42</span>
-                            <span class="text-xs text-emerald-400 font-medium flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-arrow-trend-up"></i> +5 cái mới tuần này
-                            </span>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-basket-shopping"></i>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-900 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between shadow-md hover:border-slate-700/60 transition-all">
-                        <div>
-                            <span class="block text-xs text-slate-500 font-semibold uppercase tracking-wider">Ước Tính Thu Nhập</span>
-                            <span class="text-2xl font-bold text-white mt-1 block">5,620,000₫</span>
-                            <span class="text-xs text-indigo-400 font-medium flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-chart-line"></i> +12% so với tháng trước
-                            </span>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-900 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between shadow-md hover:border-slate-700/60 transition-all">
-                        <div>
-                            <span class="block text-xs text-slate-500 font-semibold uppercase tracking-wider">Proxy Đang Chạy</span>
-                            <span class="text-2xl font-bold text-emerald-400 mt-1 block">18 / 20</span>
-                            <span class="text-xs text-slate-400 font-medium flex items-center gap-1 mt-1">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Đang kết nối tốt
-                            </span>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-network-wired"></i>
-                        </div>
-                    </div>
-
-                    <div class="bg-dark-900 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between shadow-md hover:border-slate-700/60 transition-all">
-                        <div>
-                            <span class="block text-xs text-slate-500 font-semibold uppercase tracking-wider">Số dư Referral</span>
-                            <span class="text-2xl font-bold text-amber-400 mt-1 block">180,000₫</span>
-                            <span class="text-xs text-amber-500 font-medium flex items-center gap-1 mt-1">
-                                <i class="fa-solid fa-user-group"></i> 6 thành viên đăng ký
-                            </span>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-gift"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Grid: System Logs & Hot Campaigns -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Left: Latest Transactions -->
-                    <div class="bg-dark-900 border border-slate-800/80 rounded-2xl p-6 lg:col-span-2">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-lg text-white">Lịch sử giao dịch gần đây</h3>
-                            <button onclick="switchTab('store')" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold hover:underline">Tất cả giao dịch <i class="fa-solid fa-arrow-right ml-0.5"></i></button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b border-slate-800 text-slate-500 text-xs font-semibold uppercase tracking-wider">
-                                        <th class="pb-3">Mã đơn</th>
-                                        <th class="pb-3">Sản phẩm</th>
-                                        <th class="pb-3">Ngày mua</th>
-                                        <th class="pb-3">Trạng thái</th>
-                                        <th class="pb-3 text-right">Tổng tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-800/60 text-sm text-slate-300">
-                                    <tr class="hover:bg-slate-800/20 transition-all">
-                                        <td class="py-3 font-semibold text-slate-400">#ORD-9021</td>
-                                        <td class="py-3">
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-network-wired text-emerald-400"></i>
-                                                <span>IPv4 Private Singapore (X5)</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3">Hôm nay, 14:22</td>
-                                        <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs">Hoàn thành</span></td>
-                                        <td class="py-3 text-right font-bold text-white">125,000₫</td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-800/20 transition-all">
-                                        <td class="py-3 font-semibold text-slate-400">#ORD-8940</td>
-                                        <td class="py-3">
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-brands fa-facebook text-indigo-400"></i>
-                                                <span>Via FB Cổ kháng XMDT (X2)</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3">Hôm qua, 09:15</td>
-                                        <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs">Hoàn thành</span></td>
-                                        <td class="py-3 text-right font-bold text-white">450,000₫</td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-800/20 transition-all">
-                                        <td class="py-3 font-semibold text-slate-400">#ORD-8812</td>
-                                        <td class="py-3">
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-cloud text-cyan-400"></i>
-                                                <span>VPS 4 Core 8GB RAM 30 Ngày</span>
-                                            </div>
-                                        </td>
-                                        <td class="py-3">03/07/2026</td>
-                                        <td class="py-3"><span class="px-2 py-0.5 rounded-full bg-slate-500/10 text-slate-400 text-xs">Hết hạn</span></td>
-                                        <td class="py-3 text-right font-bold text-white">350,000₫</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Right: Quick Tips / System Status -->
-                    <div class="bg-dark-900 border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-bold text-lg text-white mb-3">Tình hình tài nguyên</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <div class="flex justify-between text-xs font-semibold mb-1">
-                                        <span class="text-slate-400">Proxy Sạch (Dân cư / Datacenter)</span>
-                                        <span class="text-emerald-400">Đầy đủ (98%)</span>
-                                    </div>
-                                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                        <div class="bg-emerald-500 h-full w-[98%]"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-xs font-semibold mb-1">
-                                        <span class="text-slate-400">Tài khoản Facebook & Gmail</span>
-                                        <span class="text-indigo-400">Bán chạy (75%)</span>
-                                    </div>
-                                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                        <div class="bg-indigo-500 h-full w-[75%]"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex justify-between text-xs font-semibold mb-1">
-                                        <span class="text-slate-400">VPS MMO giá rẻ</span>
-                                        <span class="text-rose-400">Khuyên dùng (40%)</span>
-                                    </div>
-                                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                        <div class="bg-rose-500 h-full w-[40%]"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tip of the day -->
-                        <div class="mt-6 bg-slate-800/40 border border-slate-700/50 p-4 rounded-xl text-xs text-slate-400 space-y-2">
-                            <span class="font-bold text-emerald-400 flex items-center gap-1">
-                                <i class="fa-regular fa-lightbulb"></i> Mẹo MMO hôm nay:
-                            </span>
-                            <p>Đợt quét Acc gần đây của Facebook đang nhắm mạnh vào thiết bị lạ. Khuyên dùng Proxy dân cư kết hợp Antidetect Browser (Gologin/Adspower) để set camp an toàn nhất nhé anh em!</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- TAB 2: STORE (Resource Marketplace) -->
-            <section id="tab-store" class="tab-content hidden space-y-6">
-                <!-- Header Filters -->
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-dark-900 border border-slate-800/60 p-4 rounded-2xl">
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="filterStore('all')" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-emerald-500 text-dark-950" data-cat="all">Tất Cả</button>
-                        <button onclick="filterStore('proxy')" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-cat="proxy">Proxy Sạch</button>
-                        <button onclick="filterStore('account')" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-cat="account">Tài khoản Clone/Via</button>
-                        <button onclick="filterStore('tools')" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-cat="tools">Phần Mềm MMO</button>
-                        <button onclick="filterStore('vps')" class="category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700" data-cat="vps">VPS & Hosting</button>
-                    </div>
-                    
-                    <div class="relative w-full md:w-64">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </span>
-                        <input id="storeSearch" onkeyup="searchStore()" type="text" placeholder="Tìm tài nguyên..." class="w-full bg-dark-950 text-slate-200 pl-9 pr-4 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-emerald-500 transition-colors text-sm">
-                    </div>
-                </div>
-
-                <!-- Products Grid -->
-                <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Product item 1: Proxy -->
-                    <div class="product-card bg-dark-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between group" data-category="proxy">
-                        <div class="p-5 space-y-4">
-                            <div class="flex justify-between items-start">
-                                <span class="px-2 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Proxy IPv4</span>
-                                <span class="text-xs text-slate-500 font-medium">Còn: 280 gói</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white text-base tracking-wide flex items-center gap-2">
-                                    <i class="fa-solid fa-network-wired text-emerald-500"></i> IPv4 Private Singapore
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">Proxy Datacenter Singapore tốc độ cao cực chuẩn, băng thông không giới hạn, thích hợp nuôi acc, treo bot airdrop.</p>
-                            </div>
-                            <div class="space-y-1 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs text-slate-400">
-                                <p><strong class="text-slate-300">Tốc độ:</strong> 1 Gbps cực mượt</p>
-                                <p><strong class="text-slate-300">Định dạng:</strong> IP:Port:User:Pass</p>
-                            </div>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/40 flex items-center justify-between">
-                            <div>
-                                <span class="block text-[10px] text-slate-500 uppercase font-semibold">Đơn giá / tháng</span>
-                                <span class="text-lg font-extrabold text-white">25,000₫</span>
-                            </div>
-                            <button onclick="openBuyModal('IPv4 Private Singapore', 25000, 'proxy')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/10">
-                                Mua Ngay <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product item 2: Proxy Residential -->
-                    <div class="product-card bg-dark-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between group" data-category="proxy">
-                        <div class="p-5 space-y-4">
-                            <div class="flex justify-between items-start">
-                                <span class="px-2 py-0.5 rounded-lg bg-sky-500/10 text-sky-400 text-[10px] font-bold uppercase tracking-wider">Proxy Dân Cư</span>
-                                <span class="text-xs text-slate-500 font-medium">Còn: 120 gói</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white text-base tracking-wide flex items-center gap-2">
-                                    <i class="fa-solid fa-house-signal text-sky-400"></i> Proxy Dân Cư Xoay IP
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">IP sạch hoàn hảo từ người dùng thật tại Việt Nam, Hoa Kỳ. Tự động đổi IP hoặc set xoay theo nhu cầu cheat kèo.</p>
-                            </div>
-                            <div class="space-y-1 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs text-slate-400">
-                                <p><strong class="text-slate-300">Quốc gia:</strong> Vietnam, USA, UK...</p>
-                                <p><strong class="text-slate-300">Tính năng:</strong> Xoay tự động 5-30p</p>
-                            </div>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/40 flex items-center justify-between">
-                            <div>
-                                <span class="block text-[10px] text-slate-500 uppercase font-semibold">Đơn giá / GB</span>
-                                <span class="text-lg font-extrabold text-white">45,000₫</span>
-                            </div>
-                            <button onclick="openBuyModal('Proxy Dân Cư Xoay IP', 45000, 'proxy')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/10">
-                                Mua Ngay <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product item 3: Account via FB -->
-                    <div class="product-card bg-dark-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between group" data-category="account">
-                        <div class="p-5 space-y-4">
-                            <div class="flex justify-between items-start">
-                                <span class="px-2 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-400 text-[10px] font-bold uppercase tracking-wider">Via Facebook</span>
-                                <span class="text-xs text-rose-400 font-medium font-semibold">Sắp Cháy Hàng</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white text-base tracking-wide flex items-center gap-2">
-                                    <i class="fa-brands fa-facebook text-indigo-500"></i> Via Cổ Kháng XMDT
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">Account Facebook hoạt động trên 3 năm, đã xác minh danh tính bằng giấy tờ, sẵn sàng set camp quảng cáo.</p>
-                            </div>
-                            <div class="space-y-1 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs text-slate-400">
-                                <p><strong class="text-slate-300">Bảo hành:</strong> Sai pass, lỗi checkpoint 1 đổi 1</p>
-                                <p><strong class="text-slate-300">Chứa:</strong> Backup file, Token, Cookie, 2FA</p>
-                            </div>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/40 flex items-center justify-between">
-                            <div>
-                                <span class="block text-[10px] text-slate-500 uppercase font-semibold">Đơn giá / nick</span>
-                                <span class="text-lg font-extrabold text-white">220,000₫</span>
-                            </div>
-                            <button onclick="openBuyModal('Via Cổ Kháng XMDT Facebook', 220000, 'account')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/10">
-                                Mua Ngay <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product item 4: Account Gmail -->
-                    <div class="product-card bg-dark-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between group" data-category="account">
-                        <div class="p-5 space-y-4">
-                            <div class="flex justify-between items-start">
-                                <span class="px-2 py-0.5 rounded-lg bg-red-500/10 text-red-400 text-[10px] font-bold uppercase tracking-wider">Google Mail</span>
-                                <span class="text-xs text-slate-500 font-medium">Còn: 940 acc</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white text-base tracking-wide flex items-center gap-2">
-                                    <i class="fa-regular fa-envelope text-red-400"></i> Gmail Cổ Ngâm Sẵn
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">Gmail ngâm trên 6 tháng kèm email khôi phục đầy đủ. Bao trust cao để đăng ký mọi loại game, airdrop hay dịch vụ.</p>
-                            </div>
-                            <div class="space-y-1 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs text-slate-400">
-                                <p><strong class="text-slate-300">Định dạng:</strong> Email|Pass|Recovery</p>
-                                <p><strong class="text-slate-300">Trạng thái:</strong> Sạch, chưa dính spam</p>
-                            </div>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/40 flex items-center justify-between">
-                            <div>
-                                <span class="block text-[10px] text-slate-500 uppercase font-semibold">Đơn giá / acc</span>
-                                <span class="text-lg font-extrabold text-white">15,000₫</span>
-                            </div>
-                            <button onclick="openBuyModal('Gmail Cổ Ngâm Sẵn', 15000, 'account')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/10">
-                                Mua Ngay <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product item 5: Tools -->
-                    <div class="product-card bg-dark-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between group" data-category="tools">
-                        <div class="p-5 space-y-4">
-                            <div class="flex justify-between items-start">
-                                <span class="px-2 py-0.5 rounded-lg bg-pink-500/10 text-pink-400 text-[10px] font-bold uppercase tracking-wider">Phần Mềm</span>
-                                <span class="text-xs text-slate-500 font-medium">Phiên bản: v3.2</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white text-base tracking-wide flex items-center gap-2">
-                                    <i class="fa-solid fa-code text-pink-400"></i> Auto Click & Reg Acc Pro
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">Tool tự động nhấp màn hình, hỗ trợ giả lập và tích hợp API giải captcha để tạo/nuôi hàng loạt tài khoản.</p>
-                            </div>
-                            <div class="space-y-1 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs text-slate-400">
-                                <p><strong class="text-slate-300">Thiết bị:</strong> Windows 10/11</p>
-                                <p><strong class="text-slate-300">Cập nhật:</strong> Trọn đời miễn phí</p>
-                            </div>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/40 flex items-center justify-between">
-                            <div>
-                                <span class="block text-[10px] text-slate-500 uppercase font-semibold">License / 6 Tháng</span>
-                                <span class="text-lg font-extrabold text-white">490,000₫</span>
-                            </div>
-                            <button onclick="openBuyModal('Auto Click & Reg Acc Pro Tool', 490000, 'tools')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/10">
-                                Mua Ngay <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Product item 6: VPS -->
-                    <div class="product-card bg-dark-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between group" data-category="vps">
-                        <div class="p-5 space-y-4">
-                            <div class="flex justify-between items-start">
-                                <span class="px-2 py-0.5 rounded-lg bg-purple-500/10 text-purple-400 text-[10px] font-bold uppercase tracking-wider">Cloud VPS</span>
-                                <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1">⚡ 100% SSD</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white text-base tracking-wide flex items-center gap-2">
-                                    <i class="fa-solid fa-server text-purple-400"></i> Cloud VPS MMO (4 CPU/8G RAM)
-                                </h4>
-                                <p class="text-xs text-slate-400 mt-2 line-clamp-2">Máy chủ ảo cấu hình mượt cho dân cày MMO chạy bot, treo tool 24/7 không lo mất điện, kết nối internet ổn định.</p>
-                            </div>
-                            <div class="space-y-1 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs text-slate-400">
-                                <p><strong class="text-slate-300">OS:</strong> Win Server / Ubuntu</p>
-                                <p><strong class="text-slate-300">Băng thông:</strong> 500 Mbps</p>
-                            </div>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/40 flex items-center justify-between">
-                            <div>
-                                <span class="block text-[10px] text-slate-500 uppercase font-semibold">Đơn giá / tháng</span>
-                                <span class="text-lg font-extrabold text-white">350,000₫</span>
-                            </div>
-                            <button onclick="openBuyModal('Cloud VPS MMO (4 CPU/8G RAM)', 350000, 'vps')" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-bold rounded-xl transition-all text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/10">
-                                Mua Ngay <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- TAB 3: MMO TOOLS (Calculator & Checker) -->
-            <section id="tab-tools" class="tab-content hidden space-y-8">
-                
-                <!-- Tool 1: Income / ROI Estimator -->
-                <div class="bg-dark-900 border border-slate-800/80 p-6 rounded-2xl space-y-6 shadow-md">
-                    <div class="border-b border-slate-800 pb-4">
-                        <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-calculator text-emerald-400"></i> 1. Máy Tính Dự Kiến Thu Nhập MMO
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1">Ước tính lợi nhuận thu về dựa trên quy mô số lượng tài khoản chạy treo/quảng cáo của hệ thống.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div class="space-y-6">
-                            <!-- Slider 1 -->
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-sm">
-                                    <label class="text-slate-300 font-medium">Số lượng Tài khoản (Acc):</label>
-                                    <span id="accCountVal" class="text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-1 rounded-lg">50 Acc</span>
-                                </div>
-                                <input type="range" id="accCount" min="5" max="500" value="50" oninput="calculateMMOIncome()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-                                <div class="flex justify-between text-[10px] text-slate-500 font-bold">
-                                    <span>5 Acc</span>
-                                    <span>250 Acc</span>
-                                    <span>500 Acc</span>
-                                </div>
-                            </div>
-
-                            <!-- Slider 2 -->
-                            <div class="space-y-2">
-                                <div class="flex justify-between items-center text-sm">
-                                    <label class="text-slate-300 font-medium">Lợi nhuận ước tính trên 1 Acc/Ngày:</label>
-                                    <span id="incomePerAccVal" class="text-indigo-400 font-bold bg-indigo-500/10 px-2.5 py-1 rounded-lg">5,000₫</span>
-                                </div>
-                                <input type="range" id="incomePerAcc" min="500" max="50000" step="500" value="5000" oninput="calculateMMOIncome()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
-                                <div class="flex justify-between text-[10px] text-slate-500 font-bold">
-                                    <span>500₫</span>
-                                    <span>25,000₫</span>
-                                    <span>50,000₫</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Result Display Panel -->
-                        <div class="bg-dark-950/80 border border-slate-800/80 p-6 rounded-2xl text-center space-y-4">
-                            <span class="text-xs text-slate-500 font-semibold uppercase tracking-widest block">Lợi Nhuận Dự Kiến</span>
-                            <div class="grid grid-cols-2 gap-4 divide-x divide-slate-800/80">
-                                <div class="space-y-1">
-                                    <span class="text-slate-400 text-xs block">Hàng Ngày</span>
-                                    <span id="dailyIncomeResult" class="text-xl md:text-2xl font-extrabold text-emerald-400">250,000₫</span>
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-slate-400 text-xs block">Hàng Tháng</span>
-                                    <span id="monthlyIncomeResult" class="text-xl md:text-2xl font-extrabold text-white">7,500,000₫</span>
-                                </div>
-                            </div>
-                            <div class="pt-4 border-t border-slate-800/60 text-xs text-slate-500">
-                                * Lưu ý: Số liệu chỉ mang tính chất tham khảo dựa trên thống kê chung của các trại tài khoản MMO.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tool 2: Proxy Checker (Fully Functional Simulator) -->
-                <div class="bg-dark-900 border border-slate-800/80 p-6 rounded-2xl space-y-4 shadow-md">
-                    <div class="border-b border-slate-800 pb-4">
-                        <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved text-sky-400"></i> 2. Hệ Thống Kiểm Tra Hoạt Động Proxy (Proxy Checker)
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1">Dán danh sách Proxy của bạn vào (mỗi dòng một Proxy) để phân tích trạng thái hoạt động thực tế.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <!-- Left inputs -->
-                        <div class="lg:col-span-2 space-y-4">
-                            <div class="space-y-1.5">
-                                <label class="text-xs text-slate-400 font-bold">Danh sách Proxy (Định dạng: IP:Port hoặc IP:Port:User:Pass)</label>
-                                <textarea id="proxyInput" placeholder="103.155.192.41:8080&#10;192.168.1.1:1080:admin:pass123&#10;45.202.12.98:3128" class="w-full bg-dark-950 border border-slate-800 focus:outline-none focus:border-sky-500 transition-colors p-4 rounded-xl text-slate-200 text-xs font-mono h-48 focus:ring-1 focus:ring-sky-500/30"></textarea>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="checkProxies()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-dark-950 font-bold rounded-xl transition-all text-sm flex items-center gap-2 shadow-lg shadow-sky-500/10">
-                                    <i class="fa-solid fa-play"></i> Bắt đầu Kiểm tra
-                                </button>
-                                <button onclick="clearProxyChecker()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition-all border border-slate-700 text-sm">
-                                    Xóa Trống
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Right Live Progress & Results -->
-                        <div class="bg-dark-950 border border-slate-800 p-5 rounded-xl flex flex-col justify-between space-y-4">
-                            <div>
-                                <h4 class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-3">Kết quả trực tiếp</h4>
-                                <div class="grid grid-cols-3 gap-2 text-center">
-                                    <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
-                                        <span class="block text-[10px] text-slate-500 uppercase font-semibold">Đã quét</span>
-                                        <span id="checkedCount" class="text-base font-extrabold text-slate-300">0</span>
-                                    </div>
-                                    <div class="bg-emerald-950/20 border border-emerald-900/60 p-2.5 rounded-lg">
-                                        <span class="block text-[10px] text-emerald-500 uppercase font-semibold">LIVE (Sống)</span>
-                                        <span id="liveCount" class="text-base font-extrabold text-emerald-400">0</span>
-                                    </div>
-                                    <div class="bg-rose-950/20 border border-rose-900/60 p-2.5 rounded-lg">
-                                        <span class="block text-[10px] text-rose-500 uppercase font-semibold">DIE (Chết)</span>
-                                        <span id="dieCount" class="text-base font-extrabold text-rose-400">0</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex-1 bg-dark-900/40 border border-slate-800 p-3 rounded-lg overflow-y-auto max-h-[140px] text-[11px] font-mono space-y-1.5" id="checkerLog">
-                                <div class="text-slate-500 italic">Vui lòng bấm nút chạy để phân tích...</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- TAB 4: BLOGS / GUIDES -->
-            <section id="tab-guides" class="tab-content hidden space-y-6">
-                <!-- Search and Categories -->
-                <div class="border-b border-slate-800 pb-4">
-                    <h2 class="text-xl font-extrabold text-white">Thư Viện Kiến Thức MMO</h2>
-                    <p class="text-xs text-slate-400 mt-1">Cập nhật xu hướng airdrop, kinh nghiệm làm sạch IP và các phương thức kiếm tiền hiệu quả nhất.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Post 1 -->
-                    <div class="bg-dark-900 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-slate-700 transition-all flex flex-col justify-between">
-                        <div class="p-5 space-y-3">
-                            <div class="flex justify-between text-xs text-slate-500">
-                                <span>Airdrop / Testnet</span>
-                                <span>15 Phút Đọc</span>
-                            </div>
-                            <h4 class="text-base font-bold text-slate-100 hover:text-emerald-400 transition-colors line-clamp-2">Hướng Dẫn Săn Kèo Retroactive Layer 2 Chi Tiết Nhất Cho Người Mới</h4>
-                            <p class="text-xs text-slate-400 line-clamp-3">Các bước chuẩn bị ví web3, sử dụng cầu nối bắc cầu (Bridge) an toàn và chuẩn bị lượng phí gas tối ưu nhất để tăng cơ hội trúng airdrop khủng.</p>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/30 flex items-center justify-between">
-                            <span class="text-xs text-slate-500">Tác giả: Thienmoi08</span>
-                            <button onclick="readGuide('retroactive')" class="text-xs text-emerald-400 font-bold flex items-center gap-1 hover:text-emerald-300">Đọc bài viết <i class="fa-solid fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Post 2 -->
-                    <div class="bg-dark-900 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-slate-700 transition-all flex flex-col justify-between">
-                        <div class="p-5 space-y-3">
-                            <div class="flex justify-between text-xs text-slate-500">
-                                <span>Proxy & Antidetect</span>
-                                <span>10 Phút Đọc</span>
-                            </div>
-                            <h4 class="text-base font-bold text-slate-100 hover:text-emerald-400 transition-colors line-clamp-2">Tại sao nuôi Acc MMO luôn bị checkpoint? Giải pháp bảo mật Fingerprint từ A-Z</h4>
-                            <p class="text-xs text-slate-400 line-clamp-3">Phân tích sâu nguyên lý nhận diện thiết bị của Google/Facebook/Discord và lý do tại sao dùng mỗi VPN là không bao giờ đủ để bảo vệ tài sản.</p>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/30 flex items-center justify-between">
-                            <span class="text-xs text-slate-500">Tác giả: AdminMMO</span>
-                            <button onclick="readGuide('security')" class="text-xs text-emerald-400 font-bold flex items-center gap-1 hover:text-emerald-300">Đọc bài viết <i class="fa-solid fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Post 3 -->
-                    <div class="bg-dark-900 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-slate-700 transition-all flex flex-col justify-between">
-                        <div class="p-5 space-y-3">
-                            <div class="flex justify-between text-xs text-slate-500">
-                                <span>Ads & Camp</span>
-                                <span>12 Phút Đọc</span>
-                            </div>
-                            <h4 class="text-base font-bold text-slate-100 hover:text-emerald-400 transition-colors line-clamp-2">Kỹ Thuật Ngâm Via Cổ Để Kháng Lỗi XMDT Lên Camp Quảng Cáo Facebook</h4>
-                            <p class="text-xs text-slate-400 line-clamp-3">Quy trình ngâm Via, tương tác nhẹ mượt mà tránh Checkpoint hoạt động bất thường để tăng tỷ lệ duyệt Camp và tối ưu tài nguyên quảng cáo.</p>
-                        </div>
-                        <div class="p-5 border-t border-slate-800/50 bg-dark-950/30 flex items-center justify-between">
-                            <span class="text-xs text-slate-500">Tác giả: Thienmoi08</span>
-                            <button onclick="readGuide('facebook-ads')" class="text-xs text-emerald-400 font-bold flex items-center gap-1 hover:text-emerald-300">Đọc bài viết <i class="fa-solid fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- TAB 5: AFFILIATE / REFERRAL -->
-            <section id="tab-referral" class="tab-content hidden space-y-6">
-                <div class="bg-dark-900 border border-slate-800/80 rounded-2xl p-6 md:p-8 space-y-6 shadow-md relative overflow-hidden">
-                    <div class="absolute -right-20 -top-20 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl glow-effect"></div>
-
-                    <div class="max-w-2xl space-y-3 z-10 relative">
-                        <span class="px-2.5 py-1 bg-indigo-500/20 text-indigo-400 text-xs font-bold rounded-lg uppercase tracking-wider">Chia sẻ link - Nhận tiền hoa hồng</span>
-                        <h2 class="text-xl md:text-2xl font-extrabold text-white">Chương Trình Tiếp Thị Liên Kết Nhận 10% Trọn Đời</h2>
-                        <p class="text-xs md:text-sm text-slate-400 leading-relaxed">Giới thiệu bạn bè mua proxy, acc hoặc thuê tool tại MMOHub. Nhận ngay 10% hoa hồng trên tổng mỗi hóa đơn thành toán của họ. Số tiền được cộng dồn và được rút trực tiếp về Momo/Ngân hàng khi đạt tối thiểu 100k.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-800/60">
-                        <div class="space-y-2">
-                            <label class="text-xs text-slate-400 font-bold block">Đường dẫn giới thiệu của bạn:</label>
-                            <div class="flex items-center bg-dark-950 border border-slate-800 rounded-xl overflow-hidden focus-within:border-indigo-500 transition-colors">
-                                <input id="refLink" type="text" value="https://mmohub.io/register?ref=Thienmoi08" readonly class="bg-transparent border-none focus:outline-none px-4 py-2.5 text-xs text-slate-300 flex-1 font-mono">
-                                <button onclick="copyReferralLink()" class="px-4 py-2.5 bg-indigo-500 hover:bg-indigo-600 font-bold text-dark-950 text-xs transition-all flex items-center gap-1">
-                                    <i class="fa-regular fa-copy"></i> Sao chép
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Statistics Summary for Referral -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-dark-950/60 border border-slate-800 p-4 rounded-xl text-center">
-                                <span class="text-[10px] text-slate-500 font-bold block uppercase">Tổng Số Bạn Bè</span>
-                                <span class="text-xl font-bold text-white mt-1 block">6 Thành viên</span>
-                            </div>
-                            <div class="bg-dark-950/60 border border-slate-800 p-4 rounded-xl text-center">
-                                <span class="text-[10px] text-slate-500 font-bold block uppercase">Hoa hồng tích lũy</span>
-                                <span class="text-xl font-bold text-indigo-400 mt-1 block">180,000₫</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Referral Log table -->
-                <div class="bg-dark-900 border border-slate-800/80 rounded-2xl p-6">
-                    <h3 class="font-bold text-white text-base mb-4">Danh sách bạn bè đã đăng ký</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b border-slate-800 text-slate-500 text-xs font-semibold uppercase tracking-wider">
-                                    <th class="pb-3">Tài khoản</th>
-                                    <th class="pb-3">Ngày đăng ký</th>
-                                    <th class="pb-3">Chi tiêu tích lũy</th>
-                                    <th class="pb-3 text-right">Hoa hồng nhận được</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800/60 text-sm text-slate-300">
-                                <tr class="hover:bg-slate-800/10 transition-all">
-                                    <td class="py-3 font-semibold text-slate-200">vancuong_mmo</td>
-                                    <td class="py-3">02/07/2026</td>
-                                    <td class="py-3">1,200,000₫</td>
-                                    <td class="py-3 text-right font-bold text-indigo-400">120,000₫</td>
-                                </tr>
-                                <tr class="hover:bg-slate-800/10 transition-all">
-                                    <td class="py-3 font-semibold text-slate-200">ngocthuy99</td>
-                                    <td class="py-3">28/06/2026</td>
-                                    <td class="py-3">600,000₫</td>
-                                    <td class="py-3 text-right font-bold text-indigo-400">60,000₫</td>
-                                </tr>
-                                <tr class="hover:bg-slate-800/10 transition-all">
-                                    <td class="py-3 font-semibold text-slate-200">trung_botnets</td>
-                                    <td class="py-3">20/06/2026</td>
-                                    <td class="py-3">0₫</td>
-                                    <td class="py-3 text-right font-bold text-slate-500">0₫</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
+    <!-- BẢNG ĐIỀU KHIỂN GIẢ LẬP REAL-TIME (Cực xịn) -->
+    <section id="simulator" class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center mb-10">
+            <h2 class="font-gaming text-2xl md:text-4xl font-bold tracking-wider">
+                BẢNG ĐIỀU KHIỂN <span class="text-red-500">MÔ PHỎNG</span>
+            </h2>
+            <p class="text-gray-400 text-sm mt-2">Bật/tắt các tính năng dưới đây để xem cách chúng hoạt động trên màn hình radar bên phải</p>
         </div>
 
-        <!-- Footer Credits -->
-        <footer class="bg-dark-900/40 border-t border-slate-800/50 py-4 px-8 text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p>© 2026 MMOHub Ecosystem. Thiết kế bởi Thienmoi08.</p>
-            <div class="flex gap-4">
-                <a href="#" class="hover:text-slate-300 transition-colors">Điều khoản dịch vụ</a>
-                <a href="#" class="hover:text-slate-300 transition-colors">Chính sách bảo mật</a>
-            </div>
-        </footer>
-    </main>
-
-    <!-- MODAL 1: ORDER/BUY PRODUCT POPUP -->
-    <div id="buyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeBuyModal()"></div>
-        <!-- Modal body -->
-        <div class="bg-dark-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 relative z-10 space-y-4 shadow-2xl">
-            <button onclick="closeBuyModal()" class="absolute right-4 top-4 text-slate-500 hover:text-white transition-colors">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-basket-shopping text-emerald-400"></i> Đặt mua Tài Nguyên
-            </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-slate-900/30 border border-slate-900 rounded-2xl p-6">
             
-            <div class="space-y-3 bg-slate-950 p-4 rounded-xl border border-slate-800 text-sm">
-                <div class="flex justify-between">
-                    <span class="text-slate-400">Sản phẩm:</span>
-                    <span id="modalProdName" class="font-bold text-white">Product Name</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-slate-400">Đơn giá:</span>
-                    <span id="modalProdPrice" class="font-bold text-emerald-400">0₫</span>
-                </div>
-            </div>
-
-            <!-- Inputs -->
-            <div class="space-y-4 text-sm">
-                <div class="space-y-1.5">
-                    <label class="text-slate-400 text-xs font-semibold">Số lượng muốn mua:</label>
-                    <input id="modalQuantity" type="number" min="1" value="1" oninput="updateModalTotal()" class="w-full bg-dark-950 border border-slate-800 focus:outline-none focus:border-emerald-500 px-3 py-2 rounded-xl text-slate-100 text-sm font-semibold">
-                </div>
-                <div class="space-y-1.5">
-                    <label class="text-slate-400 text-xs font-semibold">Phương thức thanh toán:</label>
-                    <select id="modalPayMethod" class="w-full bg-dark-950 border border-slate-800 focus:outline-none focus:border-emerald-500 px-3 py-2 rounded-xl text-slate-100 text-sm">
-                        <option value="wallet">Thanh toán từ số dư ví (Khuyên dùng)</option>
-                        <option value="banking">Chuyển khoản Ngân hàng / MOMO (Quét QR)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Total Price & Buy Button -->
-            <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+            <!-- Cột trái: Nút bật tắt các tính năng hack -->
+            <div class="lg:col-span-5 flex flex-col justify-between">
                 <div>
-                    <span class="block text-xs text-slate-500 font-semibold">TỔNG THANH TOÁN</span>
-                    <span id="modalTotalPay" class="text-xl font-extrabold text-white">0₫</span>
+                    <h3 class="font-gaming text-lg font-bold text-red-500 mb-4 flex items-center">
+                        <i class="fa-solid fa-sliders mr-2"></i> CHEAT OPTIONS MENU
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="hack-toggles">
+                        <!-- Aimbot -->
+                        <button onclick="toggleHack('aimbot')" id="btn-aimbot" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-crosshairs text-red-500 mr-2.5"></i> Aim Bot</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- ESP -->
+                        <button onclick="toggleHack('esp')" id="btn-esp" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-eye text-red-500 mr-2.5"></i> ESP Định vị</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- Speedhack -->
+                        <button onclick="toggleHack('speedhack')" id="btn-speedhack" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-bolt text-red-500 mr-2.5"></i> Speedhack</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- Fly -->
+                        <button onclick="toggleHack('fly')" id="btn-fly" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-plane-up text-red-500 mr-2.5"></i> Fly Hack</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- Teleport -->
+                        <button onclick="toggleHack('teleport')" id="btn-teleport" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-wand-magic-sparkles text-red-500 mr-2.5"></i> Teleport</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- No Recoil -->
+                        <button onclick="toggleHack('norecoil')" id="btn-norecoil" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-minus text-red-500 mr-2.5"></i> No Recoil</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- Hack Damage -->
+                        <button onclick="toggleHack('damage')" id="btn-damage" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-skull-crossbones text-red-500 mr-2.5"></i> Hack Damage</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- Lag Switch -->
+                        <button onclick="toggleHack('lagswitch')" id="btn-lagswitch" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-wifi text-red-500 mr-2.5"></i> Lag Switch</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                        <!-- Macro -->
+                        <button onclick="toggleHack('macro')" id="btn-macro" class="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-red-500/50 transition-all group">
+                            <span class="flex items-center text-sm font-gaming"><i class="fa-solid fa-keyboard text-red-500 mr-2.5"></i> Macro Combo</span>
+                            <span class="text-xs text-gray-500 font-bold tracking-widest status-label">OFF</span>
+                        </button>
+                    </div>
                 </div>
-                <button onclick="processPurchase()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-dark-950 font-extrabold rounded-xl text-xs shadow-lg shadow-emerald-500/15 transition-all">
-                    Xác Nhận Thanh Toán
+
+                <!-- Live Info Log -->
+                <div class="mt-6 bg-slate-950 p-4 rounded-xl border border-slate-850 h-32 overflow-y-auto font-mono text-xs text-red-400 space-y-1" id="log-console">
+                    <p class="text-gray-500">[SYSTEM] Chuẩn bị khởi chạy giả lập radar...</p>
+                    <p class="text-green-400">[SYSTEM] Bypass thành công. Đã kết nối engine mô phỏng.</p>
+                </div>
+            </div>
+
+            <!-- Cột phải: Canvas hiển thị hoạt họa Radar Giả lập -->
+            <div class="lg:col-span-7 flex flex-col items-center">
+                <div class="w-full bg-slate-950 rounded-xl p-3 border border-slate-800 relative">
+                    <div class="absolute top-6 left-6 font-gaming text-[10px] tracking-widest bg-red-600/10 border border-red-500/30 text-red-400 px-2 py-0.5 rounded">
+                        MÀN HÌNH RADAR MOD
+                    </div>
+                    <canvas id="radar-canvas" class="w-full bg-slate-950 rounded-lg border border-slate-900 block" height="350" width="500"></canvas>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- DANH SÁCH CHI TIẾT TÍNH NĂNG -->
+    <section id="features" class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="font-gaming text-2xl md:text-3xl font-bold text-center mb-12 tracking-widest">
+            CHI TIẾT <span class="text-red-500">TÍNH NĂNG BÁ ĐẠO</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- 1. Aimbot -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-crosshairs text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Aim Bot & Auto Headshot</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Tự động ghim tâm chính xác tuyệt đối vào mục tiêu được chọn. Tùy chỉnh vị trí ghim (Đầu, Ngực, Bụng) cực mượt mà.</p>
+            </div>
+            <!-- 2. ESP -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-eye text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">ESP Định Vị X-Ray</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Hiển thị khung xương địch xuyên tường, đo khoảng cách chính xác, hiển thị thanh máu, tên và đường Line cảnh báo.</p>
+            </div>
+            <!-- 3. Speedhack -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-bolt text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Speedhack Tốc Biến</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Tăng tốc độ di chuyển của nhân vật gấp 2x, 5x, 10x cực kì nhanh chóng, giúp né đạn và chạy bo siêu tốc.</p>
+            </div>
+            <!-- 4. Fly -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-plane-up text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Fly Hack Bay Lượn</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Cho phép nhân vật bay lên không trung để có tầm nhìn bao quát và bắn địch từ trên cao cực kỳ dễ dàng.</p>
+            </div>
+            <!-- 5. Teleport -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-wand-magic-sparkles text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Teleport Dịch Chuyển</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Dịch chuyển tức thời đến sau lưng kẻ địch hoặc các vị trí chỉ định trên bản đồ chỉ trong chớp mắt.</p>
+            </div>
+            <!-- 6. No Recoil -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-minus text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">No Recoil Không Giật</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Loại bỏ hoàn toàn độ giật và độ nở tâm của súng. Tất cả các đường đạn bắn ra đều ghim thẳng một điểm cực chuẩn.</p>
+            </div>
+            <!-- 7. Hack Damage -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-skull-crossbones text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Hack Damage Đột Biến</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Nhân lượng sát thương đầu ra khi bắn trúng địch, hạ gục kẻ thù chỉ bằng 1-2 viên đạn cơ bản.</p>
+            </div>
+            <!-- 8. Lag Switch -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-wifi text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Lag Switch Đóng Băng</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Ngắt kết nối mạng tạm thời để di chuyển tự do hạ gục đối thủ, sau đó kết nối lại để cập nhật mạng mà không bị phát hiện.</p>
+            </div>
+            <!-- 9. Macro -->
+            <div class="bg-slate-900/30 border border-slate-900 p-6 rounded-2xl hover:border-red-500/40 transition-all duration-300">
+                <div class="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-4 border border-red-500/20">
+                    <i class="fa-solid fa-keyboard text-red-500 text-xl"></i>
+                </div>
+                <h3 class="font-gaming text-base font-bold mb-2">Macro Auto Combo</h3>
+                <p class="text-gray-400 text-xs leading-relaxed">Tối ưu hóa các thao tác bấm phím: Tự động ngồi bắn, ghim tường keo siêu tốc, combo vuốt tâm hoàn hảo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BẢNG GIÁ MUA KEY -->
+    <section id="pricing" class="max-w-7xl mx-auto px-4 py-16">
+        <h2 class="font-gaming text-2xl md:text-3xl font-bold text-center mb-4 tracking-wider">
+            BẢNG GIÁ <span class="text-red-500">MUA KEY VIP</span>
+        </h2>
+        <p class="text-center text-gray-400 text-xs mb-12">Hệ thống trả key tự động ngay sau khi xác nhận thanh toán mô phỏng thành công</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <!-- Gói ngày -->
+            <div class="bg-slate-900/50 border border-slate-900 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                <div>
+                    <h3 class="font-gaming text-lg font-bold mb-2">VIP KEY 1 NGÀY</h3>
+                    <div class="text-3xl font-bold text-red-500 font-gaming mb-4">20.000đ</div>
+                    <ul class="space-y-3 text-xs text-gray-400 mb-8">
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Trải nghiệm full 9 tính năng</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Chạy tốt trên cả Android/Giả lập</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Hỗ trợ cập nhật mượt mà</li>
+                    </ul>
+                </div>
+                <button onclick="openModal('VIP Key 1 Ngày', 20000)" class="w-full font-gaming bg-slate-950 hover:bg-red-600 text-white py-3 rounded-xl font-bold transition-all text-xs tracking-wider">
+                    MUA NGAY
+                </button>
+            </div>
+
+            <!-- Gói tuần - Bán chạy -->
+            <div class="bg-slate-900 border-2 border-red-500 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden neon-border-red">
+                <div class="absolute top-0 right-0 bg-red-500 text-white font-gaming text-[9px] tracking-widest px-4 py-1 rounded-bl font-bold">BÁN CHẠY</div>
+                <div>
+                    <h3 class="font-gaming text-lg font-bold mb-2">VIP KEY 7 NGÀY</h3>
+                    <div class="text-3xl font-bold text-red-500 font-gaming mb-4">90.000đ</div>
+                    <ul class="space-y-3 text-xs text-gray-400 mb-8">
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Trải nghiệm full 9 tính năng</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Ưu tiên cập nhật sớm nhất</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Tiết kiệm tới 35% chi phí</li>
+                    </ul>
+                </div>
+                <button onclick="openModal('VIP Key 7 Ngày', 90000)" class="w-full font-gaming bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold transition-all text-xs tracking-wider">
+                    MUA NGAY
+                </button>
+            </div>
+
+            <!-- Gói tháng -->
+            <div class="bg-slate-900/50 border border-slate-900 rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden">
+                <div>
+                    <h3 class="font-gaming text-lg font-bold mb-2">VIP KEY THÁNG</h3>
+                    <div class="text-3xl font-bold text-red-500 font-gaming mb-4">250.000đ</div>
+                    <ul class="space-y-3 text-xs text-gray-400 mb-8">
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Trải nghiệm full 9 tính năng</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Support VIP qua Discord 24/7</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Tiết kiệm tối đa ngân sách</li>
+                    </ul>
+                </div>
+                <button onclick="openModal('VIP Key Tháng (30N)', 250000)" class="w-full font-gaming bg-slate-950 hover:bg-red-600 text-white py-3 rounded-xl font-bold transition-all text-xs tracking-wider">
+                    MUA NGAY
                 </button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- MODAL 2: TOPUP POPUP -->
-    <div id="topupModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeTopupModal()"></div>
-        <!-- Modal body -->
-        <div class="bg-dark-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 relative z-10 space-y-4 shadow-2xl">
-            <button onclick="closeTopupModal()" class="absolute right-4 top-4 text-slate-500 hover:text-white transition-colors">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <!-- Modal Thanh toán & Trả Key (Thử nghiệm) -->
+    <div id="payment-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
             </button>
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-wallet text-emerald-400"></i> Nạp Tiền Hệ Thống (Mẫu QR)
-            </h3>
             
-            <p class="text-xs text-slate-400 leading-relaxed">Vui lòng chọn cổng nạp và quét mã QR để giao dịch tự động tích số dư nhanh chóng nhất.</p>
-
-            <div class="space-y-4">
-                <div class="bg-slate-950/80 p-4 border border-slate-800 rounded-xl space-y-2 text-xs">
-                    <p class="flex justify-between"><span class="text-slate-400">Chủ tài khoản:</span> <strong class="text-slate-200">NGUYEN VAN THIEN</strong></p>
-                    <p class="flex justify-between"><span class="text-slate-400">Ngân hàng:</span> <strong class="text-slate-200">MB Bank (Quân Đội)</strong></p>
-                    <p class="flex justify-between"><span class="text-slate-400">Số tài khoản:</span> <strong class="text-emerald-400 font-mono text-sm">999988882026</strong></p>
-                    <p class="flex justify-between"><span class="text-slate-400">Nội dung chuyển khoản:</span> <strong class="text-indigo-400 uppercase font-mono">MMOHUB THIENMOI08</strong></p>
+            <div id="modal-step-1">
+                <h3 class="font-gaming text-base font-bold text-center mb-4 text-red-500">MÔ PHỎNG NẠP KEY</h3>
+                <p class="text-xs text-gray-400 text-center mb-6">Bạn đang chọn: <span id="selected-package" class="text-white font-bold"></span></p>
+                
+                <div class="bg-white p-4 rounded-xl w-40 h-40 mx-auto mb-6 flex flex-col items-center justify-center text-black">
+                    <i class="fa-solid fa-qrcode text-6xl mb-2 text-slate-800 animate-pulse"></i>
+                    <span class="text-[10px] font-bold font-gaming text-center tracking-wider">DEMO PAY QR</span>
                 </div>
 
-                <div class="flex justify-center bg-white p-3 rounded-xl max-w-[160px] mx-auto shadow-md">
-                    <!-- Real dynamically built fake visual MB qr code -->
-                    <img src="https://placehold.co/150x150/ffffff/000000?text=QR+MBBank" alt="Fake QR" class="w-full">
+                <div class="space-y-3 text-xs text-gray-400 bg-slate-950 p-4 rounded-xl mb-6 border border-slate-900">
+                    <p>Số tiền thanh toán: <span id="package-price" class="text-red-400 font-bold"></span></p>
+                    <p>Nội dung chuyển khoản: <span class="text-white font-mono font-bold">NAP_FF_VIP</span></p>
+                    <p class="text-amber-500 text-[11px]"><i class="fa-solid fa-circle-info mr-1"></i> Đây chỉ là trang web giao diện demo tính năng.</p>
                 </div>
+
+                <button onclick="simulatePaymentSuccess()" class="w-full font-gaming bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-xs font-bold tracking-widest transition-all">
+                    XÁC NHẬN CHUYỂN TIỀN (GIẢ LẬP)
+                </button>
             </div>
 
-            <div class="text-center">
-                <button onclick="closeTopupModal()" class="px-6 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-xs transition-all w-full border border-slate-700">
-                    Đã chuyển khoản thành công
+            <!-- Bước trả key tự động -->
+            <div id="modal-step-2" class="hidden text-center py-4">
+                <div class="w-14 h-14 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30">
+                    <i class="fa-solid fa-check text-green-500 text-2xl"></i>
+                </div>
+                <h3 class="font-gaming text-lg font-bold text-green-400 mb-2">NẠP KEY THÀNH CÔNG!</h3>
+                <p class="text-xs text-gray-400 mb-6">Mã key Premium được lấy tự động từ kho của bạn:</p>
+                
+                <!-- Ô hiển thị Key -->
+                <div class="bg-slate-950 border border-dashed border-green-500/40 p-4 rounded-xl font-mono text-green-400 text-base tracking-wider mb-6 flex justify-between items-center">
+                    <span id="generated-key">FFVIP-XXXX-XXXX-XXXX</span>
+                    <button onclick="copyKey()" class="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded transition-all">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+                </div>
+                
+                <p class="text-xs text-gray-500 mb-4">Mở ứng dụng mod và paste key này vào để kích hoạt full quyền hạn.</p>
+                <button onclick="closeModal()" class="font-gaming text-xs text-gray-400 hover:text-white underline">
+                    Quay lại màn hình chính
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- TOAST POPUPS CONTAINER -->
-    <div id="toastContainer" class="fixed bottom-5 right-5 space-y-3 z-50 pointer-events-none"></div>
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-10 text-center text-[11px] text-gray-600 font-gaming">
+        <p>&copy; 2026 FFMODDING DEVELOPMENT. ALL RIGHTS RESERVED.</p>
+        <p class="mt-2 text-red-500/40">Giao diện thuộc dự án thử nghiệm frontend của bro Thiện.</p>
+    </footer>
 
-    <!-- JAVASCRIPT CORE LOGIC -->
+    <!-- JavaScript Engine Radar & Controls -->
     <script>
-        // 1. MOBILE SIDEBAR TOGGLER
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarOverlay.classList.toggle('hidden');
-        }
-
-        mobileMenuBtn.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
-
-        // 2. TAB SWITCHER FUNCTION
-        const tabTitles = {
-            'dashboard': 'Bảng Điều Khiển Hệ Thống',
-            'store': 'Chợ Tài Nguyên MMO Giá Sạch',
-            'tools': 'Hệ Thống Công Cụ Tiện Ích MMO',
-            'guides': 'Cẩm Nang & Kinh Nghiệm MMO Thực Chiến',
-            'referral': 'Hệ Thống Quản Lý Tiếp Thị Liên Kết'
+        // Cấu hình trạng thái các Module Hack
+        const hackStates = {
+            aimbot: false,
+            esp: false,
+            speedhack: false,
+            fly: false,
+            teleport: false,
+            norecoil: false,
+            damage: false,
+            lagswitch: false,
+            macro: false
         };
 
-        function switchTab(tabId) {
-            // Hide all tab content
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-            // Show active tab content
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-
-            // Deactivate all sidebar buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 font-medium text-sm group";
-            });
-
-            // Activate current sidebar button
-            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
-            if (activeBtn) {
-                activeBtn.className = "tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-emerald-400 bg-emerald-500/10 font-medium text-sm group";
-            }
-
-            // Update top layout bar header page title
-            const titleElement = document.getElementById('pageTitle');
-            if (titleElement && tabTitles[tabId]) {
-                titleElement.textContent = tabTitles[tabId];
-            }
-
-            // Close sidebar automatically on mobile after choosing item
-            if (!sidebar.classList.contains('-translate-x-full')) {
-                toggleSidebar();
-            }
-
-            // Notify user of switching
-            showToast(`<i class="fa-solid fa-folder-open text-indigo-400"></i> Đã mở tab ${tabTitles[tabId]}`);
+        // Báo cáo hệ thống log
+        function writeLog(message, color = 'text-red-400') {
+            const consoleBox = document.getElementById('log-console');
+            const time = new Date().toLocaleTimeString();
+            consoleBox.innerHTML += `<p class="${color}">[${time}] ${message}</p>`;
+            consoleBox.scrollTop = consoleBox.scrollHeight;
         }
 
-        // 3. TOAST SYSTEM FOR RESPONSES
-        function showToast(message, duration = 3000) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
+        // Bật tắt tính năng hack
+        function toggleHack(id) {
+            hackStates[id] = !hackStates[id];
+            const btn = document.getElementById('btn-' + id);
+            const label = btn.querySelector('.status-label');
             
-            toast.className = "bg-slate-900 border border-slate-800 text-slate-200 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-semibold min-w-[280px] pointer-events-auto transition-all transform translate-y-2 opacity-0";
-            toast.innerHTML = `
-                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping shrink-0"></div>
-                <div class="flex-1">${message}</div>
-            `;
-            
-            container.appendChild(toast);
-            
-            // Trigger animation in
-            setTimeout(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            }, 50);
-
-            // Trigger slide out & destroy
-            setTimeout(() => {
-                toast.classList.add('translate-y-2', 'opacity-0');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, duration);
-        }
-
-        // 4. INCOME CALCULATOR LOGIC
-        function calculateMMOIncome() {
-            const accCount = parseInt(document.getElementById('accCount').value);
-            const incomePerAcc = parseInt(document.getElementById('incomePerAcc').value);
-
-            // Update range slider values labels
-            document.getElementById('accCountVal').textContent = `${accCount} Acc`;
-            document.getElementById('incomePerAccVal').textContent = `${incomePerAcc.toLocaleString()}₫`;
-
-            // Calculate ROI
-            const daily = accCount * incomePerAcc;
-            const monthly = daily * 30;
-
-            // Render to outputs
-            document.getElementById('dailyIncomeResult').textContent = `${daily.toLocaleString()}₫`;
-            document.getElementById('monthlyIncomeResult').textContent = `${monthly.toLocaleString()}₫`;
-        }
-
-        // 5. PROXY CHECKER SIMULATOR
-        let checkTimer = null;
-        function checkProxies() {
-            const rawInput = document.getElementById('proxyInput').value.trim();
-            if (!rawInput) {
-                showToast("<i class='fa-solid fa-triangle-exclamation text-rose-500'></i> Bạn chưa điền dòng proxy nào!");
-                return;
-            }
-
-            const proxyList = rawInput.split('\n').map(line => line.trim()).filter(line => line !== "");
-            const logsBox = document.getElementById('checkerLog');
-            logsBox.innerHTML = ""; // Clear current logs
-
-            // Setup state
-            let checked = 0;
-            let live = 0;
-            let die = 0;
-            
-            document.getElementById('checkedCount').textContent = checked;
-            document.getElementById('liveCount').textContent = live;
-            document.getElementById('dieCount').textContent = die;
-
-            showToast("<i class='fa-solid fa-circle-notch animate-spin text-sky-400'></i> Bắt đầu kiểm tra proxy của bạn...");
-
-            let index = 0;
-            if(checkTimer) clearInterval(checkTimer);
-
-            checkTimer = setInterval(() => {
-                if (index >= proxyList.length) {
-                    clearInterval(checkTimer);
-                    showToast("<i class='fa-solid fa-circle-check text-emerald-400'></i> Hoàn tất kiểm tra danh sách proxy!");
-                    return;
-                }
-
-                const currentProxy = proxyList[index];
-                // Simulate alive probability (80% live, 20% die for realistic test)
-                const isLive = Math.random() > 0.2;
-                const ping = Math.floor(Math.random() * 200) + 40;
-
-                const logRow = document.createElement('div');
-                if (isLive) {
-                    live++;
-                    document.getElementById('liveCount').textContent = live;
-                    logRow.className = "text-emerald-400 flex justify-between";
-                    logRow.innerHTML = `<span>⚡ ${currentProxy}</span> <span class="text-slate-500 font-semibold">LIVE (${ping}ms)</span>`;
-                } else {
-                    die++;
-                    document.getElementById('dieCount').textContent = die;
-                    logRow.className = "text-rose-500 flex justify-between";
-                    logRow.innerHTML = `<span>❌ ${currentProxy}</span> <span class="text-slate-500 font-semibold">DIE</span>`;
-                }
-
-                logsBox.appendChild(logRow);
-                logsBox.scrollTop = logsBox.scrollHeight;
-
-                checked++;
-                document.getElementById('checkedCount').textContent = checked;
-
-                index++;
-            }, 600); // 600ms per proxy check simulation
-        }
-
-        function clearProxyChecker() {
-            if(checkTimer) clearInterval(checkTimer);
-            document.getElementById('proxyInput').value = "";
-            document.getElementById('checkerLog').innerHTML = `<div class="text-slate-500 italic">Vui lòng bấm nút chạy để phân tích...</div>`;
-            document.getElementById('checkedCount').textContent = 0;
-            document.getElementById('liveCount').textContent = 0;
-            document.getElementById('dieCount').textContent = 0;
-            showToast("<i class='fa-solid fa-trash text-slate-400'></i> Đã dọn dẹp trình checker!");
-        }
-
-        // 6. RESOURCE MARKETPLACE LOGIC (Filters & Purchase Modals)
-        let activeCategory = "all";
-        function filterStore(catId) {
-            activeCategory = catId;
-            
-            // Adjust category filter buttons styling classes
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                if (btn.getAttribute('data-cat') === catId) {
-                    btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-emerald-500 text-dark-950";
-                } else {
-                    btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700";
-                }
-            });
-
-            // Filtering cards
-            const cards = document.querySelectorAll('.product-card');
-            cards.forEach(card => {
-                if (catId === "all" || card.getAttribute('data-category') === catId) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
-
-        function searchStore() {
-            const query = document.getElementById('storeSearch').value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.product-card');
-            
-            cards.forEach(card => {
-                const title = card.querySelector('h4').textContent.toLowerCase();
-                const desc = card.querySelector('p').textContent.toLowerCase();
-                const matchesSearch = title.includes(query) || desc.includes(query);
-                const matchesCategory = activeCategory === "all" || card.getAttribute('data-category') === activeCategory;
-
-                if (matchesSearch && matchesCategory) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
-
-        // 7. ORDERING SYSTEM MODAL INTERACTIVES
-        let currentItemPrice = 0;
-        let currentItemName = "";
-
-        function openBuyModal(name, price, category) {
-            currentItemName = name;
-            currentItemPrice = price;
-
-            document.getElementById('modalProdName').textContent = name;
-            document.getElementById('modalProdPrice').textContent = `${price.toLocaleString()}₫`;
-            document.getElementById('modalQuantity').value = 1;
-
-            updateModalTotal();
-
-            document.getElementById('buyModal').classList.remove('hidden');
-        }
-
-        function closeBuyModal() {
-            document.getElementById('buyModal').classList.add('hidden');
-        }
-
-        function updateModalTotal() {
-            let qty = parseInt(document.getElementById('modalQuantity').value);
-            if (qty < 1 || isNaN(qty)) {
-                qty = 1;
-                document.getElementById('modalQuantity').value = 1;
-            }
-
-            const total = qty * currentItemPrice;
-            document.getElementById('modalTotalPay').textContent = `${total.toLocaleString()}₫`;
-        }
-
-        function processPurchase() {
-            const qty = parseInt(document.getElementById('modalQuantity').value);
-            const total = qty * currentItemPrice;
-            const payMethod = document.getElementById('modalPayMethod').value;
-
-            if (payMethod === 'wallet') {
-                // If paying with wallet, simulating balance deduction
-                const balance = 1450000; // Hardcoded sandbox demo balance
-                if (total > balance) {
-                    showToast("<i class='fa-solid fa-triangle-exclamation text-rose-500'></i> Ví không đủ số dư. Vui lòng nạp tiền vào tài khoản!");
-                } else {
-                    closeBuyModal();
-                    showToast(`<i class='fa-solid fa-circle-check text-emerald-400'></i> Thanh toán thành công! Bạn vừa mua thành công ${qty}x ${currentItemName}. Vui lòng kiểm tra email.`);
-                }
+            if (hackStates[id]) {
+                btn.classList.remove('border-slate-800', 'bg-slate-950/60');
+                btn.classList.add('border-red-500/80', 'bg-red-950/20', 'neon-border-red');
+                label.innerText = 'ON';
+                label.classList.remove('text-gray-500');
+                label.classList.add('text-red-400', 'neon-text');
+                writeLog(`Đã kích hoạt MODULE: ${id.toUpperCase()}`, 'text-green-400');
             } else {
-                // Paying with banking code QR fallback simulation
-                closeBuyModal();
-                showTopupModal();
-                showToast("<i class='fa-solid fa-circle-info text-sky-400'></i> Vui lòng quét QR bên dưới để thanh toán hóa đơn!");
+                btn.classList.add('border-slate-800', 'bg-slate-950/60');
+                btn.classList.remove('border-red-500/80', 'bg-red-950/20', 'neon-border-red');
+                label.innerText = 'OFF';
+                label.classList.add('text-gray-500');
+                label.classList.remove('text-red-400', 'neon-text');
+                writeLog(`Đã ngắt kết nối MODULE: ${id.toUpperCase()}`, 'text-gray-400');
             }
         }
 
-        // 8. TOPUP MODAL
-        function showTopupModal() {
-            document.getElementById('topupModal').classList.remove('hidden');
-        }
-        function closeTopupModal() {
-            document.getElementById('topupModal').classList.add('hidden');
-        }
+        // Radar Canvas Simulation
+        const canvas = document.getElementById('radar-canvas');
+        const ctx = canvas.getContext('2d');
 
-        // 9. COPY REFERRAL LINK TO CLIPBOARD
-        function copyReferralLink() {
-            const refInput = document.getElementById('refLink');
-            
-            // Cross-browser backward compatibility logic for frames
-            refInput.select();
-            refInput.setSelectionRange(0, 99999);
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast("<i class='fa-solid fa-circle-check text-emerald-400'></i> Đã sao chép link liên kết thành công!");
-                } else {
-                    showToast("<i class='fa-solid fa-circle-xmark text-rose-500'></i> Sao chép không thành công, vui lòng copy tay.");
+        // Đối tượng người chơi và kẻ địch giả lập
+        const player = { x: 250, y: 175, radius: 8, angle: 0, speed: 1.5, baseSpeed: 1.5 };
+        const enemies = [
+            { x: 100, y: 100, radius: 6, hp: 100, vx: 0.5, vy: 0.3, distance: '125m', name: 'Garena_Noob_1' },
+            { x: 400, y: 80, radius: 6, hp: 100, vx: -0.4, vy: 0.5, distance: '190m', name: 'Bot_Pro_Free' },
+            { x: 320, y: 280, radius: 6, hp: 100, vx: 0.3, vy: -0.6, distance: '85m', name: 'Thien_VIP_99' }
+        ];
+
+        let bullets = [];
+        let particles = [];
+        let recoilOffsetY = 0;
+        let lagFreezeTimer = 0;
+
+        function updateSimulation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Vẽ lưới Radar Cyberpunk
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for(let i=0; i<canvas.width; i+=40) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            }
+            for(let j=0; j<canvas.height; j+=40) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+            }
+
+            // Radar Circle Effects
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.08)';
+            ctx.beginPath(); ctx.arc(player.x, player.y, 80, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.arc(player.x, player.y, 150, 0, Math.PI * 2); ctx.stroke();
+
+            // Tính toán hiệu ứng LAG SWITCH
+            let isFrozen = false;
+            if (hackStates.lagswitch) {
+                lagFreezeTimer++;
+                if (lagFreezeTimer % 120 < 45) { // Đóng băng mỗi 2 giây
+                    isFrozen = true;
                 }
-            } catch (err) {
-                showToast("<i class='fa-solid fa-circle-xmark text-rose-500'></i> Có lỗi xảy ra khi sao chép.");
             }
+
+            // Di chuyển và cập nhật kẻ địch
+            if (!isFrozen) {
+                enemies.forEach(enemy => {
+                    enemy.x += enemy.vx;
+                    enemy.y += enemy.vy;
+                    if (enemy.x < 30 || enemy.x > canvas.width - 30) enemy.vx *= -1;
+                    if (enemy.y < 30 || enemy.y > canvas.height - 30) enemy.vy *= -1;
+                });
+            }
+
+            // Cấu hình SPEEDHACK & FLY
+            player.speed = hackStates.speedhack ? player.baseSpeed * 3.5 : player.baseSpeed;
+            
+            // Bay lượn chuyển động lên xuống nhẹ nhàng
+            let flyYOffset = 0;
+            if (hackStates.fly) {
+                flyYOffset = Math.sin(Date.now() / 150) * 8;
+                // Vẽ bóng dưới chân khi bay
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+                ctx.beginPath();
+                ctx.arc(player.x, player.y + 12, player.radius - 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Logic AIMBOT để tìm mục tiêu gần nhất
+            let closestEnemy = null;
+            let minDistance = 99999;
+            enemies.forEach(enemy => {
+                let dist = Math.hypot(enemy.x - player.x, enemy.y - player.y);
+                if (dist < minDistance && enemy.hp > 0) {
+                    minDistance = dist;
+                    closestEnemy = enemy;
+                }
+            });
+
+            // Ghi nhận TELEPORT cứ mỗi 4 giây nhảy đến mục tiêu gần nhất
+            if (hackStates.teleport && closestEnemy && Date.now() % 4000 < 50) {
+                player.x = closestEnemy.x - 20;
+                player.y = closestEnemy.y - 20;
+                writeLog("TELEPORT kích hoạt: Nhảy tới kẻ địch!", "text-purple-400");
+                // Thêm hạt bụi dịch chuyển
+                for(let i=0; i<15; i++) {
+                    particles.push({
+                        x: player.x, y: player.y,
+                        vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4,
+                        life: 30, color: 'rgba(168, 85, 247, 0.8)'
+                    });
+                }
+            }
+
+            // Vẽ hạt bay ra
+            particles.forEach((p, idx) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life--;
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI*2); ctx.fill();
+                if(p.life <= 0) particles.splice(idx, 1);
+            });
+
+            // Tự động bắn nếu bật MACRO hoặc bắn định kỳ
+            let fireRate = hackStates.macro ? 15 : 45;
+            if (Date.now() % fireRate < 20 && closestEnemy) {
+                // NO RECOIL: không lệch tâm
+                let spread = hackStates.norecoil ? 0 : (Math.random() - 0.5) * 20;
+                
+                let targetX = closestEnemy.x;
+                let targetY = closestEnemy.y;
+                
+                // Nếu khóa AIMBOT thì bắn chuẩn góc mục tiêu
+                let angle = Math.atan2(targetY - player.y, targetX - player.x);
+                
+                bullets.push({
+                    x: player.x,
+                    y: player.y + flyYOffset,
+                    vx: Math.cos(angle) * 7,
+                    vy: Math.sin(angle) * 7,
+                    spread: spread
+                });
+            }
+
+            // Vẽ và cập nhật đường đạn bắn
+            bullets.forEach((b, index) => {
+                b.x += b.vx;
+                b.y += b.vy + b.spread * 0.05;
+
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(b.x, b.y);
+                ctx.lineTo(b.x - b.vx * 1.5, b.y - b.vy * 1.5);
+                ctx.stroke();
+
+                // Kiểm tra va chạm với địch
+                enemies.forEach(enemy => {
+                    if (enemy.hp > 0 && Math.hypot(b.x - enemy.x, b.y - enemy.y) < enemy.radius + 5) {
+                        bullets.splice(index, 1);
+                        
+                        // Sát thương nhân đôi nếu bật HACK DAMAGE
+                        let damage = hackStates.damage ? 99999 : Math.floor(Math.random() * 40) + 30;
+                        enemy.hp -= damage;
+                        
+                        // Tạo hiệu ứng nổ số dame
+                        particles.push({
+                            x: enemy.x, y: enemy.y,
+                            vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3,
+                            life: 20, color: '#f59e0b', text: damage
+                        });
+
+                        if (enemy.hp <= 0) {
+                            writeLog(`Đã hạ gục mục tiêu: ${enemy.name}`, 'text-red-500');
+                            setTimeout(() => {
+                                enemy.hp = 100; // Reset sống lại để test tiếp
+                                enemy.x = Math.random() * (canvas.width - 60) + 30;
+                                enemy.y = Math.random() * (canvas.height - 60) + 30;
+                            }, 3000);
+                        }
+                    }
+                });
+
+                // Xóa đạn ra ngoài map
+                if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+                    bullets.splice(index, 1);
+                }
+            });
+
+            // Vẽ ESP Định vị địch xuyên tường
+            enemies.forEach(enemy => {
+                if (enemy.hp <= 0) return;
+
+                if (hackStates.esp) {
+                    // Vẽ khung hộp định vị (Bounding Box)
+                    ctx.strokeStyle = 'rgba(239, 68, 68, 0.7)';
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(enemy.x - 12, enemy.y - 12, 24, 24);
+
+                    // Vẽ đường Line từ người chơi đến địch
+                    ctx.strokeStyle = 'rgba(239, 68, 68, 0.25)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(player.x, player.y + flyYOffset);
+                    ctx.lineTo(enemy.x, enemy.y);
+                    ctx.stroke();
+
+                    // Vẽ text khoảng cách và tên
+                    ctx.fillStyle = '#ef4444';
+                    ctx.font = '9px Orbitron';
+                    ctx.fillText(`${enemy.name} [${enemy.hp}HP]`, enemy.x - 25, enemy.y - 20);
+                } else {
+                    // Chế độ cơ bản nếu không bật ESP
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            // Hiển thị Aimbot Target lock
+            if (hackStates.aimbot && closestEnemy) {
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.8)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(closestEnemy.x, closestEnemy.y, 16, 0, Math.PI*2);
+                ctx.stroke();
+
+                // Vẽ dấu thập tâm khóa
+                ctx.beginPath();
+                ctx.moveTo(closestEnemy.x - 20, closestEnemy.y); ctx.lineTo(closestEnemy.x + 20, closestEnemy.y);
+                ctx.moveTo(closestEnemy.x, closestEnemy.y - 20); ctx.lineTo(closestEnemy.x, closestEnemy.y + 20);
+                ctx.stroke();
+            }
+
+            // Vẽ Người chơi (Player)
+            ctx.fillStyle = '#3b82f6';
+            ctx.shadowBlur = hackStates.fly ? 15 : 0;
+            ctx.shadowColor = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(player.x, player.y + flyYOffset, player.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset shadow
+
+            // Vẽ nhãn PLAYER
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 9px Orbitron';
+            ctx.fillText("YOU", player.x - 10, player.y - 12 + flyYOffset);
+
+            // Vẽ chữ hiển thị Dame nổi
+            particles.forEach(p => {
+                if (p.text) {
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.font = 'bold 12px Orbitron';
+                    ctx.fillText(p.text, p.x, p.y);
+                    p.y -= 0.5; // Bay lên
+                }
+            });
+
+            // Di chuyển tự do người chơi (Mô phỏng chuyển động ngẫu nhiên xung quanh tâm)
+            if (!hackStates.aimbot && !isFrozen) {
+                player.x += (Math.random() - 0.5) * player.speed;
+                player.y += (Math.random() - 0.5) * player.speed;
+                
+                // Giữ player ở trong viền canvas
+                if (player.x < 50) player.x = 50;
+                if (player.x > canvas.width - 50) player.x = canvas.width - 50;
+                if (player.y < 50) player.y = 50;
+                if (player.y > canvas.height - 50) player.y = canvas.height - 50;
+            }
+
+            requestAnimationFrame(updateSimulation);
         }
 
-        // 10. EXPAND READ GUIDE SIMULATION MODAL
-        const guideArticles = {
-            'retroactive': "Hướng dẫn cách tạo hàng loạt Ví Metamask, nạp tiền Gas qua Binance an toàn tránh liên kết chéo ví. Cách swap coin qua SyncSwap, Orbiter Bridge để tăng volume giao dịch.",
-            'security': "Sử dụng giả lập Antidetect kết hợp các gói Proxy Dân Cư xoay mỗi camp để giả lập địa chỉ thực thi. Cấu hình timezone trùng IP quốc gia để tạo độ tin cậy tuyệt đối.",
-            'facebook-ads': "Cách mua Via, ngâm 24-48 giờ trên thiết bị lạ, sau đó mồi xem video, lướt tin tức như người dùng thật rồi mới tiến hành Add thẻ và lên camp đầu tiên mượt mà."
-        };
+        // Bắt đầu vòng lặp đồ họa giả lập
+        updateSimulation();
 
-        function readGuide(id) {
-            if (guideArticles[id]) {
-                showToast(`<i class="fa-solid fa-book-open text-emerald-400"></i> ${guideArticles[id]}`, 6000);
-            }
+        // Danh sách thông báo ảo ngẫu nhiên tăng độ uy tín
+        const buyers = ['Thien***', 'Phong***', 'Vinh***', 'Gia***', 'Dan***', 'Hoang***', 'Viet***', 'Tu***'];
+        const packages = ['Key VIP 1 Ngày', 'Key VIP 7 Ngày', 'Key VIP Cả Tháng'];
+        
+        setInterval(() => {
+            const randomName = buyers[Math.floor(Math.random() * buyers.length)];
+            const randomPkg = packages[Math.floor(Math.random() * packages.length)];
+            const notifEl = document.getElementById('live-notif');
+            
+            notifEl.style.opacity = 0;
+            setTimeout(() => {
+                notifEl.innerHTML = `<i class="fa-solid fa-fire mr-1 text-red-500"></i> Khách hàng <span class="text-white font-bold">${randomName}</span> vừa mua ${randomPkg}!`;
+                notifEl.style.opacity = 1;
+            }, 500);
+        }, 8000);
+
+        // Quản lý Modal mua Key
+        function openModal(packageName, price) {
+            document.getElementById('selected-package').innerText = packageName;
+            document.getElementById('package-price').innerText = price.toLocaleString('vi-VN') + ' VNĐ';
+            document.getElementById('modal-step-1').classList.remove('hidden');
+            document.getElementById('modal-step-2').classList.add('hidden');
+            document.getElementById('payment-modal').classList.remove('hidden');
         }
 
-        // INIT FIRST CALCULATION
-        window.onload = function() {
-            calculateMMOIncome();
-        };
+        function closeModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        }
+
+        function simulatePaymentSuccess() {
+            document.getElementById('modal-step-1').classList.add('hidden');
+            document.getElementById('modal-step-2').classList.remove('hidden');
+            
+            // Tạo mã key Premium ngẫu nhiên đẹp mắt
+            const randomKey = 'FFVIP-' + Math.random().toString(36).substring(2, 7).toUpperCase() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase() + '-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+            document.getElementById('generated-key').innerText = randomKey;
+        }
+
+        function copyKey() {
+            const keyText = document.getElementById('generated-key').innerText;
+            navigator.clipboard.writeText(keyText).then(() => {
+                alert('Đã sao chép mã Key Premium vào khay nhớ tạm!');
+            });
+        }
     </script>
 </body>
 </html>
