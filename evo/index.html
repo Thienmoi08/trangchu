@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvoWars.io Pro Edition</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #0b0c10; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+        .interactive { pointer-events: auto; }
+
+        /* Menu Styles */
+        .screen { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(10, 12, 18, 0.85); backdrop-filter: blur(10px); transition: all 0.5s ease; }
+        .hidden { opacity: 0; pointer-events: none; display: none !important; }
+        
+        h1 { font-size: 4rem; color: #66fcf1; text-shadow: 0 0 20px #66fcf1; margin-bottom: 20px; font-weight: 900; letter-spacing: 5px; }
+        
+        .btn { padding: 15px 40px; font-size: 1.5rem; background: transparent; border: 2px solid #66fcf1; color: #66fcf1; border-radius: 30px; cursor: pointer; font-weight: bold; transition: all 0.3s; text-shadow: 0 0 5px #66fcf1; box-shadow: 0 0 15px rgba(102, 252, 241, 0.2); margin: 10px; }
+        .btn:hover { background: #66fcf1; color: #0b0c10; box-shadow: 0 0 30px #66fcf1; transform: scale(1.05); }
+
+        /* Shop Styles */
+        .shop-container { width: 80%; max-width: 800px; background: #1f2833; border: 2px solid #45a29e; border-radius: 20px; padding: 20px; color: white; display: flex; flex-direction: column; align-items: center; }
+        .skin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; width: 100%; max-height: 300px; overflow-y: auto; padding: 10px; }
+        .skin-card { background: #0b0c10; border: 2px solid #c5a059; border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .skin-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(197, 160, 89, 0.4); }
+        .skin-card.selected { border-color: #66fcf1; box-shadow: 0 0 15px #66fcf1; }
+        .currency { font-size: 1.8rem; color: #c5a059; font-weight: bold; margin-bottom: 15px; }
+
+        /* In-game HUD */
+        #hud { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .hud-top { display: flex; justify-content: space-between; width: 100%; }
+        .stat-box { background: rgba(31, 40, 51, 0.7); border-left: 5px solid #66fcf1; padding: 10px 20px; border-radius: 0 10px 10px 0; color: #fff; font-size: 1.2rem; font-weight: bold; }
+        .leaderboard { background: rgba(31, 40, 51, 0.7); padding: 15px; border-radius: 10px; border: 1px solid #45a29e; color: #fff; min-width: 200px; }
+        .leaderboard h3 { color: #66fcf1; margin-bottom: 5px; border-bottom: 1px solid #45a29e; padding-bottom: 5px; }
+        .leaderboard ol { padding-left: 20px; font-size: 0.9rem; }
+        .leaderboard li { margin: 5px 0; }
+        
+        .hud-bottom { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .xp-bar-container { width: 60%; height: 25px; background: #1f2833; border: 2px solid #45a29e; border-radius: 15px; overflow: hidden; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .xp-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #45a29e, #66fcf1); transition: width 0.1s; }
+        .xp-text { position: absolute; width: 100%; text-align: center; top: 50%; transform: translateY(-50%); color: #fff; font-weight: bold; font-size: 0.9rem; text-shadow: 1px 1px 2px #000; }
+        .level-text { color: #66fcf1; font-size: 1.5rem; font-weight: bold; margin-bottom: 5px; text-shadow: 0 0 10px rgba(102, 252, 241, 0.5); }
+    </style>
+</head>
+<body>
+
+    <div id="ui-layer">
+        <!-- Main Menu -->
+        <div id="menu-screen" class="screen interactive">
+            <h1>EVOWARS.IO PRO</h1>
+            <div style="display: flex;">
+                <button class="btn" onclick="startGame()">VÀO CHƠI</button>
+                <button class="btn" style="border-color: #c5a059; color: #c5a059; text-shadow: 0 0 5px #c5a059;" onclick="openShop()">CỬA HÀNG SKIN</button>
+            </div>
+        </div>
+
+        <!-- Shop Screen -->
+        <div id="shop-screen" class="screen hidden interactive">
+            <div class="shop-container">
+                <h2>CỬA HÀNG VŨ KHÍ & SKIN</h2>
+                <div class="currency">VÀNG CỦA BRO: <span id="gold-count">0</span> 🪙</div>
+                <div class="skin-grid" id="skin-grid">
+                    <!-- Skins populated by JS -->
+                </div>
+                <button class="btn" style="margin-top:20px;" onclick="closeShop()">QUAY LẠI</button>
+            </div>
+        </div>
+
+        <!-- HUD Layer -->
+        <div id="hud" class="hidden">
+            <div class="hud-top">
+                <div>
+                    <div class="stat-box">Kills: <span id="kill-val">0</span></div>
+                    <div class="stat-box" style="margin-top: 5px; border-color: #c5a059;">Vàng: <span id="gold-val">0</span> 🪙</div>
+                </div>
+                <div class="leaderboard">
+                    <h3>BẢNG XẾP HẠNG</h3>
+                    <ol id="leaderboard-list">
+                        <!-- Top 5 players -->
+                    </ol>
+                </div>
+            </div>
+            <div class="hud-bottom">
+                <div class="level-text" id="level-display">CẤP 1: CAVE MAN</div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar" id="xp-bar-fill"></div>
+                    <div class="xp-text" id="xp-text-display">0 / 100 XP</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen hidden interactive">
+            <h1 style="color: #ff3333; text-shadow: 0 0 20px #ff3333;">BRO ĐÃ BAY MÀU!</h1>
+            <p style="color: white; font-size: 1.5rem; margin-bottom: 20px;" id="gameover-stats">Hạ gục: 0 | Cấp độ đạt được: 1</p>
+            <button class="btn" onclick="restartGame()">HỒI SINH TRẬN MỚI</button>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Chặn menu chuột phải mặc định để dùng skill tăng tốc
+        window.addEventListener('contextmenu', e => e.preventDefault());
+
+        // CẤU HÌNH TIẾN HÓA (3 CẤP ĐỘ KHÁC NHAU VỀ ĐỘ LỰC, KIẾM DÀI RA)
+        const EVOLUTIONS = [
+            { level: 1, name: "CAVEMAN PRO", color: "#8b5a2b", weaponLen: 45, weaponWidth: 8, speed: 4.5, xpNeeded: 100, scale: 1 },
+            { level: 2, name: "SPARTAN WARRIOR", color: "#e74c3c", weaponLen: 65, weaponWidth: 12, speed: 4.0, xpNeeded: 250, scale: 1.25 },
+            { level: 3, name: "SHADOW NINJA", color: "#9b59b6", weaponLen: 85, weaponWidth: 14, speed: 3.6, xpNeeded: 500, scale: 1.5 },
+            { level: 4, name: "CYBER KNIGHT", color: "#2ecc71", weaponLen: 110, weaponWidth: 18, speed: 3.2, xpNeeded: 1000, scale: 1.8 },
+            { level: 5, name: "GOD OF WAR", color: "#f1c40f", weaponLen: 140, weaponWidth: 24, speed: 2.8, xpNeeded: 99999, scale: 2.1 }
+        ];
+
+        // KHỞI TẠO CỬA HÀNG SKIN
+        let SKINS = [
+            { id: 'default', name: 'Mặc Định', cost: 0, color: null, purchased: true },
+            { id: 'neon', name: 'Hào Quang Neon', cost: 50, color: '#66fcf1', purchased: false },
+            { id: 'blood', name: 'Huyết Long', cost: 150, color: '#ff0055', purchased: false },
+            { id: 'gold', name: 'Hoàng Kim', cost: 300, color: '#ffd700', purchased: false }
+        ];
+
+        // TRẠNG THÁI GAME
+        let gameActive = false;
+        let worldSize = 4000; // Độ rộng bản đồ
+        let player;
+        let bots = [];
+        let candies = [];
+        let particles = [];
+        let camera = { x: 0, y: 0 };
+        let mouse = { x: 0, y: 0 };
+        
+        // Tài sản người chơi lưu trữ trong session
+        let playerGold = 100; // Cho sẵn 100 vàng trải nghiệm shop
+        let selectedSkin = 'default';
+
+        // ĐIỀU KHIỂN CHUỘT KHÁCH HÀNG
+        let isRightMouseDown = false;
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        window.addEventListener('mousedown', (e) => {
+            if (!gameActive) return;
+            if (e.button === 0) { // Chuột trái -> Chém
+                player.attack();
+            } else if (e.button === 2) { // Chuột phải -> Tăng tốc
+                isRightMouseDown = true;
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (e.button === 2) isRightMouseDown = false;
+        });
+
+        // LỚP THỰC THỂ GỐC (CHARACTER)
+        class Character {
+            constructor(x, y, isBot = true, name = "Bot Pro") {
+                this.x = x;
+                this.y = y;
+                this.isBot = isBot;
+                this.name = name;
+                this.levelIndex = 0;
+                this.xp = 0;
+                this.kills = 0;
+                
+                this.angle = 0;
+                this.targetAngle = 0;
+                
+                // Trạng thái tấn công (Vung kiếm)
+                this.isAttacking = false;
+                this.attackProgress = 0; // 0 đến 1
+                this.attackCooldown = 0;
+                this.swingDirection = 1; // 1 hoặc -1 để vung qua lại
+                
+                // Trạng thái tăng tốc
+                this.isSprinting = false;
+
+                this.updateStats();
+            }
+
+            updateStats() {
+                let currentEvo = EVOLUTIONS[this.levelIndex];
+                this.maxSpeed = currentEvo.speed;
+                this.weaponLen = currentEvo.weaponLen;
+                this.weaponWidth = currentEvo.weaponWidth;
+                this.radius = 25 * currentEvo.scale;
+                this.color = currentEvo.color;
+            }
+
+            attack() {
+                if (this.attackCooldown <= 0 && !this.isAttacking) {
+                    this.isAttacking = true;
+                    this.attackProgress = 0;
+                    this.swingDirection = Math.random() > 0.5 ? 1 : -1;
+                    this.attackCooldown = 25; // Frame cooldown
+                }
+            }
+
+            gainXP(amount) {
+                this.xp += amount;
+                let currentEvo = EVOLUTIONS[this.levelIndex];
+                if (this.xp >= currentEvo.xpNeeded && this.levelIndex < EVOLUTIONS.length - 1) {
+                    this.xp -= currentEvo.xpNeeded;
+                    this.levelIndex++;
+                    this.updateStats();
+                    createLevelUpParticles(this.x, this.y);
+                    if (!this.isBot) {
+                        document.getElementById('level-display').innerText = `CẤP ${this.levelIndex + 1}: ${EVOLUTIONS[this.levelIndex].name}`;
+                    }
+                }
+            }
+
+            update() {
+                let currentEvo = EVOLUTIONS[this.levelIndex];
+                
+                // Giảm hồi chiêu
+                if (this.attackCooldown > 0) this.attackCooldown--;
+
+                // Xử lý hoạt ảnh vung kiếm chém
+                if (this.isAttacking) {
+                    this.attackProgress += 0.12; // Tốc độ vung kiếm
+                    if (this.attackProgress >= 1) {
+                        this.isAttacking = false;
+                        this.attackProgress = 0;
+                    }
+                }
+
+                // Xử lý tốc độ và di chuyển
+                let currentSpeed = this.maxSpeed;
+                if (this.isSprinting && this.xp > 2) {
+                    currentSpeed *= 1.75;
+                    this.gainXP(-0.4); // Tốn XP khi lướt tốc độ
+                    if(Math.random() < 0.4) createTrailParticle(this.x, this.y, this.radius, this.color);
+                }
+
+                // Cập nhật góc và hướng di chuyển
+                if (!this.isBot) {
+                    // Logic tính góc theo chuột cho Người chơi
+                    let dx = mouse.x - (this.x - camera.x);
+                    let dy = mouse.y - (this.y - camera.y);
+                    this.targetAngle = Math.atan2(dy, dx);
+                    
+                    // Góc xoay mượt mà
+                    let diff = this.targetAngle - this.angle;
+                    while (diff < -Math.PI) diff += Math.PI * 2;
+                    while (diff > Math.PI) diff -= Math.PI * 2;
+                    this.angle += diff * 0.2;
+
+                    // Di chuyển theo hướng chuột
+                    let dist = Math.hypot(dx, dy);
+                    if (dist > 10) {
+                        this.x += Math.cos(this.angle) * currentSpeed;
+                        this.y += Math.sin(this.angle) * currentSpeed;
+                    }
+                    this.isSprinting = isRightMouseDown && this.xp > 5;
+                } else {
+                    // SIÊU AI BOT LOGIC PRO PLAYER
+                    this.runBotAI(currentSpeed);
+                }
+
+                // Giới hạn biên bản đồ
+                this.x = Math.max(this.radius, Math.min(worldSize - this.radius, this.x));
+                this.y = Math.max(this.radius, Math.min(worldSize - this.radius, this.y));
+            }
+
+            runBotAI(currentSpeed) {
+                let closestCandy = null;
+                let closestCandyDist = 300;
+                let dangerousEnemy = null;
+                let dangerousDist = 400;
+                let targetEnemy = null;
+                let targetEnemyDist = 350;
+
+                // 1. Quét tìm các mối nguy hại hoặc con mồi xung quanh
+                let entities = [player, ...bots];
+                for (let ent of entities) {
+                    if (!ent || ent === this) continue;
+                    let d = Math.hypot(ent.x - this.x, ent.y - this.y);
+                    
+                    // Phát hiện đối thủ to hơn đang ở gần hoặc đang chém
+                    if (d < dangerousDist && (ent.levelIndex >= this.levelIndex || ent.isAttacking)) {
+                        dangerousEnemy = ent;
+                        dangerousDist = d;
+                    }
+                    // Phát hiện con mồi ngon ăn (nhỏ hơn hoặc ngang cấp đang sơ hở)
+                    if (d < targetEnemyDist && ent.levelIndex <= this.levelIndex) {
+                        targetEnemy = ent;
+                        targetEnemyDist = d;
+                    }
+                }
+
+                // 2. Ra quyết định hành động phản xạ siêu Pro
+                this.isSprinting = false;
+
+                if (dangerousEnemy && dangerousDist < (dangerousEnemy.weaponLen + this.radius + 50)) {
+                    // LOGIC NÉ ĐÒN: Chạy ngược góc với kẻ địch, kích hoạt Sprint lướt né
+                    let escapeAngle = Math.atan2(this.y - dangerousEnemy.y, this.x - dangerousEnemy.x);
+                    this.targetAngle = escapeAngle;
+                    this.isSprinting = true; // Dùng tốc độ lướt ra ngoài vùng chém
+                } 
+                else if (targetEnemy) {
+                    // LOGIC SĂN MỒI: Tấn công dồn dập
+                    let attackAngle = Math.atan2(targetEnemy.y - this.y, targetEnemy.x - this.x);
+                    this.targetAngle = attackAngle;
+
+                    // Áp sát cực nhanh và vung kiếm
+                    if (targetEnemyDist < this.weaponLen + targetEnemy.radius) {
+                        this.attack();
+                    } else if (targetEnemyDist < this.weaponLen + 100) {
+                        this.isSprinting = true; // Bật lướt áp sát bất ngờ kiểu Pro Played
+                    }
+                } 
+                else {
+                    // LOGIC FARM KẸO: Tìm kẹo ăn tối ưu
+                    for (let c of candies) {
+                        let d = Math.hypot(c.x - this.x, c.y - this.y);
+                        if (d < closestCandyDist) {
+                            closestCandy = c;
+                            closestCandyDist = d;
+                        }
+                    }
+                    if (closestCandy) {
+                        this.targetAngle = Math.atan2(closestCandy.y - this.y, closestCandy.x - this.x);
+                    }
+                }
+
+                // Xoay góc mượt mà
+                let diff = this.targetAngle - this.angle;
+                while (diff < -Math.PI) diff += Math.PI * 2;
+                while (diff > Math.PI) diff -= Math.PI * 2;
+                this.angle += diff * 0.15;
+
+                // Tiến lên
+                this.x += Math.cos(this.angle) * currentSpeed;
+                this.y += Math.sin(this.angle) * currentSpeed;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+
+                // Lấy màu sắc dựa trên skin (áp dụng riêng cho người chơi)
+                let bodyColor = this.color;
+                let auraColor = null;
+
+                if (!this.isBot && selectedSkin !== 'default') {
+                    let skinObj = SKINS.find(s => s.id === selectedSkin);
+                    if (skinObj && skinObj.color) {
+                        auraColor = skinObj.color;
+                        bodyColor = skinObj.color;
+                    }
+                }
+
+                // VẼ HÀO QUANG LỰC CHIẾN (NẾU CÓ SKIN XỊN)
+                if (auraColor) {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.radius + 15, 0, Math.PI * 2);
+                    ctx.fillStyle = auraColor + "22";
+                    ctx.fill();
+                }
+
+                // 1. VẼ PHẦN THÂN NHÂN VẬT NHÌN "LỰC" (Có Giáp vai, cơ bắp)
+                // Giáp vai trái & phải góc cạnh hình ngũ giác
+                ctx.fillStyle = "#111";
+                ctx.strokeStyle = bodyColor;
+                ctx.lineWidth = 3;
+                
+                ctx.beginPath(); // Vai trái
+                ctx.rect(-this.radius*0.4, -this.radius * 1.1, this.radius * 0.8, this.radius * 0.5);
+                ctx.fill(); ctx.stroke();
+
+                ctx.beginPath(); // Vai phải
+                ctx.rect(-this.radius*0.4, this.radius * 0.6, this.radius * 0.8, this.radius * 0.5);
+                ctx.fill(); ctx.stroke();
+
+                // Thân chính (Khối đa giác đô con lực lưỡng)
+                ctx.fillStyle = bodyColor;
+                ctx.beginPath();
+                ctx.moveTo(-this.radius, -this.radius*0.6);
+                ctx.lineTo(this.radius*0.8, -this.radius*0.8);
+                ctx.lineTo(this.radius, 0);
+                ctx.lineTo(this.radius*0.8, this.radius*0.8);
+                ctx.lineTo(-this.radius, this.radius*0.6);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Mắt chiến binh (Hai vệt sáng rực dữ dằn)
+                ctx.fillStyle = "#fff";
+                ctx.fillRect(this.radius * 0.3, -this.radius * 0.4, 6, 3);
+                ctx.fillRect(this.radius * 0.3, this.radius * 0.2, 6, 3);
+
+                // 2. VẼ VŨ KHÍ CỰC ĐỈNH ĐANG VUNG
+                // Tính góc vung dựa vào trạng thái hoạt ảnh chém
+                let swingAngle = 0;
+                if (this.isAttacking) {
+                    // Tạo quỹ đạo chém từ -Góc đến +Góc
+                    let startArc = -Math.PI / 3;
+                    let endArc = Math.PI / 2;
+                    swingAngle = startArc + (endArc - startArc) * this.attackProgress;
+                    swingAngle *= this.swingDirection;
+                }
+
+                ctx.save();
+                ctx.translate(this.radius * 0.5, this.radius * 0.5); // Vị trí tay cầm vũ khí bên phải
+                ctx.rotate(swingAngle);
+
+                // Vẽ Lưỡi Kiếm / Rìu Phức Tạp Lực Lưỡng
+                let wLen = this.weaponLen;
+                let wWidth = this.weaponWidth;
+
+                // Chuôi kiếm
+                ctx.fillStyle = "#555";
+                ctx.fillRect(0, -3, 15, 6);
+                
+                // Hào quang lưỡi kiếm khi chém
+                if (this.isAttacking) {
+                    ctx.fillStyle = auraColor ? auraColor + "44" : "rgba(255,255,255,0.3)";
+                    ctx.beginPath();
+                    ctx.moveTo(15, -wWidth-4);
+                    ctx.lineTo(wLen+8, 0);
+                    ctx.lineTo(15, wWidth+4);
+                    ctx.fill();
+                }
+
+                // Thân Lưỡi Kiếm Đại Bản Đồ
+                let grad = ctx.createLinearGradient(15, 0, wLen, 0);
+                grad.addColorStop(0, "#fff");
+                grad.addColorStop(0.5, bodyColor);
+                grad.addColorStop(1, "#111");
+                ctx.fillStyle = grad;
+                
+                ctx.beginPath();
+                ctx.moveTo(15, -wWidth / 2);
+                ctx.lineTo(wLen * 0.8, -wWidth / 2);
+                ctx.lineTo(wLen, 0); // Mũi kiếm nhọn hoắt
+                ctx.lineTo(wLen * 0.8, wWidth / 2);
+                ctx.lineTo(15, wWidth / 2);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = "#fff";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.restore(); // Hết vũ khí
+                ctx.restore(); // Hết nhân vật
+
+                // Vẽ Tên hiển thị phía trên đầu nhân vật
+                ctx.fillStyle = "#ffffff";
+                ctx.font = "bold 14px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(`${this.name} [Lv.${this.levelIndex + 1}]`, this.x, this.y - this.radius - 20);
+            }
+
+            // KIỂM TRA VA CHẠM ĐÒN CHÉM VỚI ĐỐI THỦ KHÁC
+            checkHit(target) {
+                if (!this.isAttacking) return false;
+                
+                // Xác định vùng đỉnh lưỡi kiếm quét qua dựa trên góc hiện tại
+                let swingAngle = 0;
+                let startArc = -Math.PI / 3;
+                let endArc = Math.PI / 2;
+                swingAngle = startArc + (endArc - startArc) * this.attackProgress;
+                swingAngle *= this.swingDirection;
+                
+                let actualWeaponAngle = this.angle + swingAngle;
+
+                // Tọa độ đỉnh cao nhất của thanh kiếm phát ra
+                let tipX = this.x + Math.cos(actualWeaponAngle) * this.weaponLen;
+                let tipY = this.y + Math.sin(actualWeaponAngle) * this.weaponLen;
+
+                // Tính khoảng cách từ đỉnh kiếm/thân kiếm tới tâm đối thủ
+                // Cách đơn giản hóa chuẩn xác: Xét đoạn thẳng từ tâm người chém đến mũi kiếm
+                let dist = distToSegment({x: target.x, y: target.y}, {x: this.x, y: this.y}, {x: tipX, y: tipY});
+
+                return dist < target.radius;
+            }
+        }
+
+        // HÀM TOÁN HỌC PHỤ TRỢ TÍNH KHOẢNG CÁCH ĐOẠN THẲNG
+        function distToSegment(p, v, w) {
+            let l2 = Math.hypot(v.x - w.x, v.y - w.y) ** 2;
+            if (l2 === 0) return Math.hypot(p.x - v.x, p.y - v.y);
+            let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+            t = Math.max(0, Math.min(1, t));
+            return Math.hypot(p.x - (v.x + t * (w.x - v.x)), p.y - (v.y + t * (w.y - v.y)));
+        }
+
+        // LỚP HẠT KẸO KINH NGHIỆM (CANDY)
+        class Candy {
+            constructor() {
+                this.x = Math.random() * worldSize;
+                this.y = Math.random() * worldSize;
+                this.radius = Math.random() * 5 + 4;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+                this.xpValue = this.radius * 3;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.shadowBlur = 0; // reset
+            }
+        }
+
+        // HIỆU ỨNG HẠT PARTICLE PHỨC TẠP
+        function createLevelUpParticles(x, y) {
+            for(let i=0; i<30; i++) {
+                particles.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    radius: Math.random() * 4 + 2,
+                    color: '#66fcf1',
+                    alpha: 1,
+                    life: 40
+                });
+            }
+        }
+
+        function createDeathParticles(x, y, color) {
+            for(let i=0; i<25; i++) {
+                particles.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.5) * 12,
+                    radius: Math.random() * 6 + 3,
+                    color: color || '#ff3333',
+                    alpha: 1,
+                    life: 50
+                });
+            }
+        }
+
+        function createTrailParticle(x, y, radius, color) {
+            particles.push({
+                x: x, y: y, vx: 0, vy: 0,
+                radius: radius * 0.8, color: color, alpha: 0.4, life: 15
+            });
+        }
+
+        // KHỞI ĐỘNG CÁC PHẦN TỬ TRONG GAME
+        function initGameData() {
+            player = new Character(worldSize/2, worldSize/2, false, "BRO THIỆN");
+            bots = [];
+            candies = [];
+            particles = [];
+
+            let botNames = ["GamerPro", "NoobSlayer", "EvoKing", "Assassin99", "ShadowVn", "DarkLord", "NinjaVIP", "Zeus", "Thor", "HackBuster"];
+            for (let i = 0; i < 15; i++) {
+                let name = botNames[i % botNames.length] + ` [AI]`;
+                bots.push(new Character(Math.random() * worldSize, Math.random() * worldSize, true, name));
+            }
+
+            for (let i = 0; i < 400; i++) {
+                candies.push(new Candy());
+            }
+            
+            // Set giao diện ban đầu
+            document.getElementById('level-display').innerText = `CẤP 1: ${EVOLUTIONS[0].name}`;
+            updateHUD();
+        }
+
+        function updateHUD() {
+            document.getElementById('kill-val').innerText = player.kills;
+            document.getElementById('gold-val').innerText = playerGold;
+            
+            let currentEvo = EVOLUTIONS[player.levelIndex];
+            let pct = (player.xp / currentEvo.xpNeeded) * 100;
+            document.getElementById('xp-bar-fill').style.width = `${Math.min(100, pct)}%`;
+            document.getElementById('xp-text-display').innerText = `${Math.floor(player.xp)} / ${currentEvo.xpNeeded} XP`;
+
+            // Bảng xếp hạng
+            let all = [player, ...bots].sort((a,b) => (b.levelIndex * 10000 + b.xp) - (a.levelIndex * 10000 + a.xp));
+            let listHtml = "";
+            for(let i=0; i<Math.min(5, all.length); i++) {
+                let p = all[i];
+                let isMe = p === player ? "style='color:#66fcf1; font-weight:bold;'" : "";
+                listHtml += `<li ${isMe}>${p.name} (Lv.${p.levelIndex+1})</li>`;
+            }
+            document.getElementById('leaderboard-list').innerHTML = listHtml;
+        }
+
+        // VÒNG LẶP CHÍNH CỦA GAME (GAME LOOP)
+        function gameLoop() {
+            if (!gameActive) return;
+
+            // 1. CẬP NHẬT TRẠNG THÁI
+            player.update();
+            
+            // Camera mượt mà bám sát người chơi
+            camera.x += (player.x - canvas.width / 2 - camera.x) * 0.1;
+            camera.y += (player.y - canvas.height / 2 - camera.y) * 0.1;
+
+            // Cập nhật bot
+            for (let i = bots.length - 1; i >= 0; i--) {
+                bots[i].update();
+            }
+
+            // Xử lý hạt hiệu ứng
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx; p.y += p.vy;
+                p.life--;
+                p.alpha = p.life / 50;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+
+            // Kiểm tra ăn kẹo
+            let allEntities = [player, ...bots];
+            for (let ent of allEntities) {
+                for (let i = candies.length - 1; i >= 0; i--) {
+                    let c = candies[i];
+                    if (Math.hypot(ent.x - c.x, ent.y - c.y) < ent.radius + c.radius) {
+                        ent.gainXP(c.xpValue);
+                        candies.splice(i, 1);
+                        // Bổ sung kẹo mới ngay lập tức giữ mật độ
+                        candies.push(new Candy());
+                    }
+                }
+            }
+
+            // KIỂM TRA ĐÒN CHÉM HẠ GỤC NHAU (MỘT PHÁT ĐI LUÔN)
+            // Người chơi chém trúng Bot?
+            for (let i = bots.length - 1; i >= 0; i--) {
+                if (player.checkHit(bots[i])) {
+                    createDeathParticles(bots[i].x, bots[i].y, bots[i].color);
+                    player.kills++;
+                    playerGold += (bots[i].levelIndex + 1) * 10; // Rơi vàng tùy cấp
+                    player.gainXP((bots[i].levelIndex + 1) * 70);
+                    
+                    // Hồi sinh bot mới tại góc ngẫu nhiên
+                    let botNames = ["SátThủVôTình", "ChémLàChết", "GamerẨnDanh", "ThầnRìu"];
+                    bots[i] = new Character(Math.random() * worldSize, Math.random() * worldSize, true, botNames[Math.floor(Math.random()*botNames.length)] + " [AI]");
+                }
+            }
+
+            // Bot chém trúng Người chơi hoặc chém trúng lẫn nhau?
+            for (let b of bots) {
+                if (b.checkHit(player)) {
+                    // Người chơi tử trận!
+                    gameActive = false;
+                    createDeathParticles(player.x, player.y, player.color);
+                    document.getElementById('hud').classList.add('hidden');
+                    document.getElementById('gameover-screen').classList.remove('hidden');
+                    document.getElementById('gameover-stats').innerText = `Hạ gục: ${player.kills} | Cấp độ đạt được: ${player.levelIndex + 1}`;
+                    return;
+                }
+                
+                // Bot chém bot khác
+                for(let targetBot of bots) {
+                    if(b !== targetBot && b.checkHit(targetBot)) {
+                        createDeathParticles(targetBot.x, targetBot.y, targetBot.color);
+                        b.gainXP((targetBot.levelIndex + 1) * 60);
+                        targetBot.x = Math.random() * worldSize;
+                        targetBot.y = Math.random() * worldSize;
+                        targetBot.levelIndex = 0;
+                        targetBot.updateStats();
+                    }
+                }
+            }
+
+            updateHUD();
+
+            // 2. TIẾN HÀNH VẼ ĐỒ HỌA LÊN CANVAS
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.save();
+            ctx.translate(-camera.x, -camera.y);
+
+            // Vẽ lưới nền Arena tinh tế
+            ctx.strokeStyle = '#1f2833';
+            ctx.lineWidth = 1;
+            let gridSize = 100;
+            for (let x = 0; x < worldSize; x += gridSize) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, worldSize); ctx.stroke();
+            }
+            for (let y = 0; y < worldSize; y += gridSize) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(worldSize, y); ctx.stroke();
+            }
+
+            // Vẽ biên giới map đấu trường nguy hiểm
+            ctx.strokeStyle = '#ff3333';
+            ctx.lineWidth = 10;
+            ctx.strokeRect(0, 0, worldSize, worldSize);
+
+            // Vẽ Kẹo
+            for (let c of candies) c.draw();
+
+            // Vẽ Hạt hiệu ứng
+            for (let p of particles) {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Vẽ Bot trước
+            for (let b of bots) b.draw();
+
+            // Vẽ Người chơi lên trên cùng nổi bật
+            player.draw();
+
+            ctx.restore();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // CÁC HÀM ĐIỀU KHIỂN GIAO DIỆN CHUYỂN MÀN HÌNH
+        function startGame() {
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('hud').classList.remove('hidden');
+            gameActive = true;
+            initGameData();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function restartGame() {
+            document.getElementById('gameover-screen').classList.add('hidden');
+            document.getElementById('hud').classList.remove('hidden');
+            gameActive = true;
+            initGameData();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function openShop() {
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('shop-screen').classList.remove('hidden');
+            document.getElementById('gold-count').innerText = playerGold;
+            renderShop();
+        }
+
+        function closeShop() {
+            document.getElementById('shop-screen').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('hidden');
+        }
+
+        function renderShop() {
+            let container = document.getElementById('skin-grid');
+            container.innerHTML = "";
+            SKINS.forEach(skin => {
+                let card = document.createElement('div');
+                card.className = `skin-card ${selectedSkin === skin.id ? 'selected' : ''}`;
+                
+                let btnText = skin.purchased ? "TRANG BỊ" : `MUA: ${skin.cost} 🪙`;
+                if(selectedSkin === skin.id) btnText = "ĐANG DÙNG";
+
+                card.innerHTML = `
+                    <h4 style="color:${skin.color || '#fff'}">${skin.name}</h4>
+                    <p style="margin: 10px 0; font-size:0.8rem; color:#aaa;">Tạo hào quang cực ngầu khi vung kiếm</p>
+                    <button class="btn" style="font-size:1rem; padding: 5px 15px;" onclick="handleShopClick('${skin.id}')">${btnText}</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handleShopClick(id) {
+            let skin = SKINS.find(s => s.id === id);
+            if (skin.purchased) {
+                selectedSkin = id;
+            } else {
+                if (playerGold >= skin.cost) {
+                    playerGold -= skin.cost;
+                    skin.purchased = true;
+                    selectedSkin = id;
+                    document.getElementById('gold-count').innerText = playerGold;
+                } else {
+                    alert("Không đủ vàng rồi bro ơi! Đi chém bot để cày thêm vàng nhé.");
+                }
+            }
+            renderShop();
+        }
+    </script>
+</body>
+</html>
