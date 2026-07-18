@@ -1,7 +1,7 @@
 // File: data/unit3.js
 // Chứa toàn bộ từ vựng Unit 3: Fun and games
 
-const unit3Data = {
+window.unit3Data = {
     unit: "Unit 3",
     title: "Fun and games",
     topic_vocabulary: [
