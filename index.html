@@ -3,49 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bro Thiện English Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>English Hub - Bro Thiện</title>
     <style>
-        .perspective { perspective: 1000px; }
-        .card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
-        .flipped { transform: rotateY(180deg); }
-        .back { transform: rotateY(180deg); backface-visibility: hidden; }
-        .front { backface-visibility: hidden; }
+        /* Gradient Animation Tốc Độ Cao */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 5s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+        }
+
+        /* Liquid Glass Style */
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover { background: rgba(255, 255, 255, 0.4); transform: scale(1.02); }
+        .hidden { display: none; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body>
 
-    <!-- TRANG CHỦ -->
-    <div id="unit-selection" class="max-w-md mx-auto p-6 mt-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Chào Bro Thiện! Chọn Unit học đi:</h1>
-        <button onclick="loadUnit('unit3')" class="w-full bg-blue-600 text-white p-4 rounded-xl shadow-lg hover:bg-blue-700 transition">Unit 3: Fun and Games</button>
+    <!-- TRANG CHỌN UNIT -->
+    <div id="unit-selection" class="glass">
+        <h1 class="text-2xl font-bold mb-6">Hello Bro Thiện</h1>
+        <button onclick="loadUnit('unit3')">🚀 Unit 3: Fun and Games</button>
     </div>
 
     <!-- GIAO DIỆN HỌC -->
-    <div id="learning-app" class="hidden max-w-md mx-auto p-4 mt-5">
-        <h2 id="unit-title" class="text-xl font-bold text-center mb-4"></h2>
+    <div id="learning-app" class="glass hidden">
+        <h2 id="unit-title" class="text-xl font-semibold mb-4"></h2>
         
-        <!-- Flashcard -->
-        <div class="perspective h-48 mb-6" onclick="flipCard()">
-            <div id="card-inner" class="card-inner relative w-full h-full text-center">
-                <div class="front absolute w-full h-full bg-white rounded-2xl shadow-md flex items-center justify-center p-4 text-2xl font-bold">
-                    <span id="word-display">Word</span>
-                </div>
-                <div class="back absolute w-full h-full bg-blue-500 text-white rounded-2xl shadow-md flex items-center justify-center p-4 text-xl">
-                    <span id="meaning-display">Meaning</span>
-                </div>
-            </div>
+        <div id="flashcard" class="h-32 flex items-center justify-center bg-white/20 rounded-xl mb-6 cursor-pointer">
+            <p id="word-display" class="text-2xl font-bold">Word</p>
         </div>
 
-        <!-- Quiz Area -->
-        <div id="options-grid" class="grid grid-cols-1 gap-3"></div>
+        <div id="options-grid" class="grid grid-cols-2 gap-3"></div>
         
-        <div class="mt-6 flex gap-2">
-            <button onclick="nextWord()" class="flex-1 bg-gray-800 text-white p-3 rounded-lg">Tiếp theo</button>
-            <button onclick="startVoiceCheck()" class="flex-1 bg-green-600 text-white p-3 rounded-lg">🎙️ Check Phát Âm</button>
-        </div>
-        
-        <button onclick="location.reload()" class="w-full mt-4 text-gray-500 underline">Về trang chọn Unit</button>
+        <button onclick="checkSpeaking()" class="bg-green-500/30 mt-4">🎙️ Check Phát Âm</button>
+        <button onclick="location.reload()" class="text-white/70 text-sm underline mt-4">Quay lại chọn Unit</button>
     </div>
 
     <script src="main.js"></script>
@@ -57,19 +84,13 @@
                 document.getElementById('unit-selection').classList.add('hidden');
                 document.getElementById('learning-app').classList.remove('hidden');
                 
-                // Khởi tạo từ biến toàn cục trong file JS load được
+                // Khởi tạo (Bro nhớ viết hàm initUnit trong main.js)
                 const data = window[`${unitName}Data`];
                 document.getElementById('unit-title').innerText = data.title;
-                showQuestion(data);
+                document.getElementById('word-display').innerText = data.topic_vocabulary[0].word;
             };
             document.head.appendChild(script);
         }
-
-        function flipCard() {
-            document.getElementById('card-inner').classList.toggle('flipped');
-        }
-
-        // Bro sẽ viết tiếp logic hiển thị trong main.js dựa trên các ID này
     </script>
 </body>
 </html>
