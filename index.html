@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Hub - Bro Thiện</title>
-    <!-- Import Font hiện đại từ Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { font-family: 'Plus Jakarta Sans', sans-serif; }
-
-        /* Nền tối Aurora huyền bí */
         body {
             background-color: #0d0f18;
             overflow-x: hidden;
@@ -22,81 +19,66 @@
             justify-content: center;
             position: relative;
         }
-
-        /* Quả cầu ánh sáng chuyển động tạo hiệu ứng Liquid Glass */
         .blob {
-            position: absolute;
-            filter: blur(80px);
-            z-index: 0;
-            opacity: 0.7;
+            position: absolute; filter: blur(80px); z-index: 0; opacity: 0.6;
             animation: float 10s infinite alternate ease-in-out;
         }
-        .blob-1 { width: 300px; height: 300px; background: #ff007f; top: 10%; left: 15%; }
-        .blob-2 { width: 350px; height: 350px; background: #00f0ff; bottom: 15%; right: 15%; animation-duration: 14s; }
-        .blob-3 { width: 250px; height: 250px; background: #7000ff; top: 40%; left: 50%; animation-duration: 12s; }
-
+        .blob-1 { width: 300px; height: 300px; background: #ff007f; top: 5%; left: 10%; }
+        .blob-2 { width: 350px; height: 350px; background: #00f0ff; bottom: 10%; right: 10%; animation-duration: 14s; }
+        .blob-3 { width: 250px; height: 250px; background: #7000ff; top: 40%; left: 40%; animation-duration: 12s; }
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, -50px) scale(1.1); }
-            100% { transform: translate(-20px, 30px) scale(0.9); }
+            100% { transform: translate(30px, -50px) scale(1.1); }
         }
-
-        /* Liquid Glass chuẩn Apple/Cyberpunk */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); z-index: 10;
         }
-
-        /* Nút bấm Glassmorphism */
         .glass-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
         }
-        .glass-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, f, f, 0.2);
-        }
+        .glass-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
         .glass-btn:active { transform: translateY(0); }
-
-        /* Lật thẻ 3D */
+        .tab-active { background: rgba(0, 240, 255, 0.2) !important; border-color: #00f0ff !important; color: #00f0ff !important; font-weight: bold; }
+        
+        /* 3D Flip */
         .perspective { perspective: 1000px; }
         .card-inner { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
         .flipped { transform: rotateY(180deg); }
         .front, .back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .back { transform: rotateY(180deg); }
+        
+        /* Custom Scrollbar cho list từ */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
     </style>
 </head>
-<body class="p-4 text-white">
+<body class="p-3 text-white">
 
-    <!-- Glowing Blobs tạo hiệu ứng khúc xạ ánh sáng -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
 
-    <!-- 1. TRANG CHỌN UNIT -->
+    <!-- 1. MÀN HÌNH CHỌN UNIT -->
     <div id="unit-selection" class="glass-panel w-full max-w-md p-8 rounded-3xl text-center relative transition-all duration-500">
-        <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-cyan-400 uppercase bg-cyan-500/10 rounded-full border border-cyan-500/20">
-            English B1 Hub
+        <div class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-cyan-400 uppercase bg-cyan-500/10 rounded-full border border-cyan-500/20">
+            VIP English B1
         </div>
         <h1 class="text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
             Chào Bro Thiện! ⚡
         </h1>
-        <p class="text-slate-400 text-sm mb-8">Hệ thống từ vựng & kiểm tra phát âm chuẩn</p>
+        <p class="text-slate-400 text-sm mb-8">Hệ thống học từ vựng toàn diện</p>
 
         <div class="space-y-4">
             <button onclick="loadUnit('unit3')" class="glass-btn w-full p-4 rounded-2xl font-bold text-left flex items-center justify-between group">
                 <span class="flex items-center gap-3">
-                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-lg shadow-lg shadow-pink-500/30">🎯</span>
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-lg shadow-lg shadow-pink-500/30">🚀</span>
                     <div>
                         <div class="text-white font-bold group-hover:text-cyan-300 transition">Unit 3: Fun and Games</div>
-                        <div class="text-xs text-slate-400">38 từ vựng & cấu trúc</div>
+                        <div class="text-xs text-slate-400">Từ vựng, Phrasal Verbs, Word Form...</div>
                     </div>
                 </span>
                 <span class="text-slate-400 group-hover:translate-x-1 transition-transform">➔</span>
@@ -104,95 +86,270 @@
         </div>
     </div>
 
-    <!-- 2. GIAO DIỆN HỌC & TEST -->
-    <div id="learning-app" class="glass-panel w-full max-w-md p-6 rounded-3xl relative hidden transition-all duration-500">
-        <!-- Header nhỏ -->
-        <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-            <span id="unit-title" class="font-bold text-lg text-cyan-400">Unit 3</span>
-            <button onclick="location.reload()" class="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition">
+    <!-- 2. MÀN HÌNH APP HỌC TẬP -->
+    <div id="learning-app" class="glass-panel w-full max-w-md p-5 rounded-3xl relative hidden transition-all duration-500 flex flex-col max-h-[90vh]">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-white/10 shrink-0">
+            <span id="unit-title" class="font-bold text-lg text-cyan-400">Loading...</span>
+            <button onclick="location.reload()" class="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10">
                 ✕ Thoát
             </button>
         </div>
 
-        <!-- Thẻ lật Flashcard 3D -->
-        <div class="perspective h-48 mb-6 cursor-pointer" onclick="flipCard()">
-            <div id="card-inner" class="card-inner relative w-full h-full">
-                <!-- Mặt trước (Word) -->
-                <div class="front absolute inset-0 glass-panel rounded-2xl p-6 flex flex-col items-center justify-center border-white/20 bg-gradient-to-br from-white/10 to-transparent">
-                    <span class="text-xs text-slate-400 uppercase tracking-widest mb-2">Từ vựng</span>
-                    <span id="word-display" class="text-3xl font-extrabold text-white tracking-wide">Word</span>
-                    <span class="text-[11px] text-cyan-300 mt-3 opacity-75">↻ Chạm để lật thẻ</span>
-                </div>
-                <!-- Mặt sau (Meaning) -->
-                <div class="back absolute inset-0 glass-panel rounded-2xl p-6 flex flex-col items-center justify-center border-cyan-500/30 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 shadow-lg shadow-cyan-500/10">
-                    <span class="text-xs text-cyan-300 uppercase tracking-widest mb-2">Ý nghĩa</span>
-                    <span id="meaning-display" class="text-2xl font-bold text-white text-center">Meaning</span>
-                </div>
-            </div>
+        <!-- Tab Navigation (Menu 3 chế độ) -->
+        <div class="grid grid-cols-3 gap-1 mb-4 shrink-0 bg-black/20 p-1 rounded-xl border border-white/5">
+            <button onclick="switchTab('list')" id="btn-tab-list" class="glass-btn py-2 rounded-lg text-xs font-semibold">📋 List từ</button>
+            <button onclick="switchTab('flashcard')" id="btn-tab-flashcard" class="glass-btn py-2 rounded-lg text-xs font-semibold tab-active">🎴 Lật thẻ</button>
+            <button onclick="switchTab('quiz')" id="btn-tab-quiz" class="glass-btn py-2 rounded-lg text-xs font-semibold">🎮 Game</button>
         </div>
 
-        <!-- 4 Đáp án trắc nghiệm -->
-        <div class="mb-6">
-            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Chọn đáp án đúng:</div>
-            <div id="options-grid" class="grid grid-cols-2 gap-3">
-                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 1</button>
-                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 2</button>
-                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 3</button>
-                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 4</button>
+        <!-- NỘI DUNG TỪNG TAB -->
+        <div class="overflow-y-auto grow pr-1">
+            
+            <!-- TAB 1: LIST TỪ MỚI -->
+            <div id="tab-list" class="hidden space-y-2">
+                <div class="text-xs text-slate-400 mb-2">Tổng hợp toàn bộ từ vựng trong bài:</div>
+                <div id="word-list-container" class="space-y-2"></div>
             </div>
-        </div>
 
-        <!-- Nút check phát âm & Nút Next -->
-        <div class="flex gap-3 pt-2">
-            <button onclick="checkSpeaking()" class="glass-btn flex-1 py-3.5 px-4 rounded-xl font-bold bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-emerald-500/30 hover:border-emerald-500 flex items-center justify-center gap-2 text-emerald-300 shadow-lg shadow-emerald-500/10">
-                <span class="text-lg">🎙️</span> Đọc thử
-            </button>
-            <button onclick="nextWord()" class="glass-btn py-3.5 px-6 rounded-xl font-bold bg-white/10 hover:bg-white/20 text-white">
-                Tiếp ➔
-            </button>
+            <!-- TAB 2: FLASHCARD & PHÁT ÂM -->
+            <div id="tab-flashcard" class="space-y-4">
+                <div class="flex justify-between text-xs text-slate-400 px-1">
+                    <span>Chạm thẻ để xem nghĩa</span>
+                    <span id="card-counter">1/30</span>
+                </div>
+
+                <!-- Thẻ lật 3D -->
+                <div class="perspective h-48 cursor-pointer" onclick="flipCard()">
+                    <div id="card-inner" class="card-inner relative w-full h-full">
+                        <div class="front absolute inset-0 glass-panel rounded-2xl p-6 flex flex-col items-center justify-center border-white/20 bg-gradient-to-br from-white/10 to-transparent">
+                            <span id="card-type" class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-slate-300 uppercase tracking-widest mb-2">type</span>
+                            <span id="card-word" class="text-3xl font-extrabold text-white text-center">Word</span>
+                            <span class="text-[11px] text-cyan-300 mt-4 opacity-75">↻ Chạm để lật</span>
+                        </div>
+                        <div class="back absolute inset-0 glass-panel rounded-2xl p-6 flex flex-col items-center justify-center border-cyan-500/30 bg-gradient-to-br from-cyan-500/20 to-blue-600/20">
+                            <span class="text-xs text-cyan-300 uppercase tracking-widest mb-2">Ý nghĩa</span>
+                            <span id="card-meaning" class="text-xl font-bold text-white text-center">Meaning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút điều hướng thẻ & Check phát âm -->
+                <div class="flex gap-2">
+                    <button onclick="prevCard()" class="glass-btn px-4 py-3 rounded-xl font-bold text-sm">⬅️ Trước</button>
+                    <button onclick="startVoiceCheck()" class="glass-btn flex-1 py-3 px-2 rounded-xl font-bold bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-emerald-500/40 text-emerald-300 flex items-center justify-center gap-1 text-sm shadow-lg shadow-emerald-500/10">
+                        🎙️ Đọc thử từ này
+                    </button>
+                    <button onclick="nextCard()" class="glass-btn px-4 py-3 rounded-xl font-bold text-sm">Sau ➡️</button>
+                </div>
+                <div id="voice-result" class="text-center text-xs h-4 font-semibold text-amber-300"></div>
+            </div>
+
+            <!-- TAB 3: GAME TRẮC NGHIỆM -->
+            <div id="tab-quiz" class="hidden space-y-4">
+                <div class="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/10">
+                    <span class="text-xs text-slate-300">Điểm của Bro: <strong id="quiz-score" class="text-cyan-400 text-sm">0</strong></span>
+                    <button onclick="initQuiz()" class="text-[11px] bg-white/10 px-2 py-1 rounded hover:bg-white/20 text-slate-300">🔄 Đổi câu khác</button>
+                </div>
+
+                <div class="text-center py-6 glass-panel rounded-2xl border-white/10 bg-white/5">
+                    <div class="text-xs text-slate-400 mb-1">Từ này nghĩa là gì bro?</div>
+                    <div id="quiz-question" class="text-2xl font-extrabold text-cyan-300">Question</div>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-1 gap-2.5">
+                    <!-- 4 nút trắc nghiệm tự tạo bằng JS -->
+                </div>
+                <div id="quiz-feedback" class="text-center text-xs font-bold h-4"></div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Nhúng file logic -->
-    <script src="main.js"></script>
+    <!-- HỆ THỐNG LOGIC TRUNG TÂM -->
     <script>
-        function loadUnit(unitName) {
-            // Hiệu ứng chuyển cảnh mượt mà
-            document.getElementById('unit-selection').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('unit-selection').classList.add('hidden');
-                const app = document.getElementById('learning-app');
-                app.classList.remove('hidden');
-                app.style.opacity = '0';
-                setTimeout(() => app.style.opacity = '1', 50);
-            }, 300);
+        let currentData = null;
+        let allWordsList = [];
+        let currentIndex = 0;
+        let score = 0;
+        let currentQuizAnswer = "";
 
-            // Tải file data
+        // 1. Tải Unit và khởi động
+        function loadUnit(unitName) {
             const script = document.createElement('script');
             script.src = `data/${unitName}.js`;
+            
             script.onload = () => {
-                const data = window[`${unitName}Data`];
-                if(data) {
-                    document.getElementById('unit-title').innerText = data.title;
-                    if(typeof initUnit === 'function') initUnit(data);
+                // Lấy dữ liệu từ window (Đó là lý do cần đổi thành window.unit3Data)
+                currentData = window[`${unitName}Data`];
+                if (!currentData) {
+                    alert("Lỗi: Không đọc được dữ liệu. Bro nhớ đổi 'const unit3Data' thành 'window.unit3Data' trong file js nhé!");
+                    return;
                 }
+
+                // Gom tất cả từ vựng lại thành 1 mảng dễ xử lý
+                allWordsList = [
+                    ...currentData.topic_vocabulary,
+                    ...currentData.phrasal_verbs
+                ];
+
+                // Chuyển màn hình
+                document.getElementById('unit-selection').classList.add('hidden');
+                document.getElementById('learning-app').classList.remove('hidden');
+                document.getElementById('unit-title').innerText = currentData.title;
+
+                // Khởi tạo các chức năng
+                renderWordList();
+                showCard(0);
+                initQuiz();
             };
+
             script.onerror = () => {
-                // Dữ liệu mẫu tạm thời nếu chưa có file unit3.js để Bro test giao diện ngay
-                document.getElementById('word-display').innerText = "board game";
-                document.getElementById('meaning-display').innerText = "trò chơi bàn cờ";
+                alert(`Không tìm thấy file data/${unitName}.js! Bro kiểm tra lại tên thư mục và file xem chuẩn chưa nhé.`);
             };
+
             document.head.appendChild(script);
         }
 
-        function flipCard() {
-            document.getElementById('card-inner').classList.toggle('flipped');
+        // 2. Chuyển đổi giữa 3 Tab
+        function switchTab(tab) {
+            ['list', 'flashcard', 'quiz'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-tab-${t}`).classList.remove('tab-active');
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`btn-tab-${tab}`).classList.add('tab-active');
         }
 
-        function nextWord() {
-            if(typeof loadNextQuestion === 'function') loadNextQuestion();
-            // Reset lại mặt thẻ trước khi chuyển từ mới
+        // 3. Logic Tab 1: List từ mới
+        function renderWordList() {
+            const container = document.getElementById('word-list-container');
+            container.innerHTML = "";
+            allWordsList.forEach(item => {
+                container.innerHTML += `
+                    <div class="glass-btn p-3 rounded-xl flex justify-between items-center text-left">
+                        <div>
+                            <span class="font-bold text-white text-sm">${item.word}</span>
+                            <span class="text-[10px] text-slate-400 ml-1">(${item.type || 'phrase'})</span>
+                        </div>
+                        <div class="text-xs text-cyan-300 font-medium text-right max-w-[50%]">${item.meaning}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // 4. Logic Tab 2: Flashcard & Phát âm
+        function showCard(index) {
+            if (index < 0) currentIndex = allWordsList.length - 1;
+            else if (index >= allWordsList.length) currentIndex = 0;
+            else currentIndex = index;
+
+            const item = allWordsList[currentIndex];
+            document.getElementById('card-word').innerText = item.word;
+            document.getElementById('card-meaning').innerText = item.meaning;
+            document.getElementById('card-type').innerText = item.type || "phrase";
+            document.getElementById('card-counter').innerText = `${currentIndex + 1}/${allWordsList.length}`;
+            
+            // Luôn úp thẻ lại khi sang từ mới
             document.getElementById('card-inner').classList.remove('flipped');
+            document.getElementById('voice-result').innerText = "";
+        }
+
+        function nextCard() { showCard(currentIndex + 1); }
+        function prevCard() { showCard(currentIndex - 1); }
+        function flipCard() { document.getElementById('card-inner').classList.toggle('flipped'); }
+
+        // Check phát âm bằng Web Speech API
+        function startVoiceCheck() {
+            const targetWord = allWordsList[currentIndex].word;
+            const resultDiv = document.getElementById('voice-result');
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                resultDiv.innerText = "❌ Trình duyệt của bro không hỗ trợ nghe giọng nói rồi!";
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            
+            resultDiv.innerText = "🎙️ Đang nghe bro nói... Nói to lên nào!";
+            recognition.start();
+
+            recognition.onresult = (event) => {
+                const speech = event.results[0][0].transcript.toLowerCase();
+                if (speech.includes(targetWord.toLowerCase()) || targetWord.toLowerCase().includes(speech)) {
+                    resultDiv.innerHTML = `<span class="text-emerald-400">🎉 Đỉnh quá Bro! Bạn đọc chuẩn từ "${speech}"</span>`;
+                } else {
+                    resultDiv.innerHTML = `<span class="text-rose-400">❌ Bạn vừa đọc là "${speech}". Thử lại xem!</span>`;
+                }
+            };
+
+            recognition.onerror = () => {
+                resultDiv.innerText = "❌ Lỗi micro hoặc bro chưa cấp quyền mic!";
+            };
+        }
+
+        // 5. Logic Tab 3: Game Trắc nghiệm 4 lựa chọn
+        function initQuiz() {
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.innerText = "";
+            
+            // Bốc ngẫu nhiên 1 câu hỏi
+            const randIdx = Math.floor(Math.random() * allWordsList.length);
+            const questionItem = allWordsList[randIdx];
+            currentQuizAnswer = questionItem.meaning;
+            
+            document.getElementById('quiz-question').innerText = questionItem.word;
+
+            // Bốc 3 đáp án sai ngẫu nhiên
+            let options = [currentQuizAnswer];
+            let allMeanings = allWordsList.map(i => i.meaning);
+            
+            while (options.length < 4) {
+                let randomMeaning = allMeanings[Math.floor(Math.random() * allMeanings.length)];
+                if (!options.includes(randomMeaning)) options.push(randomMeaning);
+            }
+
+            // Xáo trộn đáp án
+            options.sort(() => Math.random() - 0.5);
+
+            // Render 4 nút
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = "";
+            options.forEach(opt => {
+                optionsContainer.innerHTML += `
+                    <button onclick="checkAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="glass-btn p-3.5 rounded-xl text-sm font-semibold text-slate-200 text-left">
+                        👉 ${opt}
+                    </button>
+                `;
+            });
+        }
+
+        function checkAnswer(btn, selectedMeaning) {
+            const feedback = document.getElementById('quiz-feedback');
+            const allBtns = document.getElementById('quiz-options').children;
+
+            if (selectedMeaning === currentQuizAnswer) {
+                btn.style.background = "rgba(16, 185, 129, 0.4)";
+                btn.style.borderColor = "#10b981";
+                feedback.innerHTML = '<span class="text-emerald-400">⚡ Chuẩn không cần chỉnh! +1 Điểm</span>';
+                score++;
+                document.getElementById('quiz-score').innerText = score;
+                setTimeout(initQuiz, 1200); // Tự sang câu mới sau 1.2s
+            } else {
+                btn.style.background = "rgba(244, 63, 94, 0.4)";
+                btn.style.borderColor = "#f43f5e";
+                feedback.innerHTML = '<span class="text-rose-400">💔 Sai rồi bro ơi! Chọn lại đi!</span>';
+                // Highlight đáp án đúng cho bro thấy
+                for(let b of allBtns) {
+                    if (b.innerText.includes(currentQuizAnswer)) {
+                        b.style.borderColor = "#10b981";
+                        b.style.color = "#34d399";
+                    }
+                }
+            }
         }
     </script>
 </body>
