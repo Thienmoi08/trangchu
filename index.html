@@ -4,92 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Hub - Bro Thiện</title>
+    <!-- Import Font hiện đại từ Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Gradient Animation Tốc Độ Cao */
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Nền tối Aurora huyền bí */
         body {
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 5s ease infinite;
+            background-color: #0d0f18;
+            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
+            position: relative;
         }
 
-        /* Liquid Glass Style */
-        .glass {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border-radius: 20px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            color: white;
+        /* Quả cầu ánh sáng chuyển động tạo hiệu ứng Liquid Glass */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.7;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+        .blob-1 { width: 300px; height: 300px; background: #ff007f; top: 10%; left: 15%; }
+        .blob-2 { width: 350px; height: 350px; background: #00f0ff; bottom: 15%; right: 15%; animation-duration: 14s; }
+        .blob-3 { width: 250px; height: 250px; background: #7000ff; top: 40%; left: 50%; animation-duration: 12s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -50px) scale(1.1); }
+            100% { transform: translate(-20px, 30px) scale(0.9); }
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 12px;
-            border: none;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
+        /* Liquid Glass chuẩn Apple/Cyberpunk */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            z-index: 10;
         }
-        button:hover { background: rgba(255, 255, 255, 0.4); transform: scale(1.02); }
-        .hidden { display: none; }
+
+        /* Nút bấm Glassmorphism */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, f, f, 0.2);
+        }
+        .glass-btn:active { transform: translateY(0); }
+
+        /* Lật thẻ 3D */
+        .perspective { perspective: 1000px; }
+        .card-inner { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .flipped { transform: rotateY(180deg); }
+        .front, .back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .back { transform: rotateY(180deg); }
     </style>
 </head>
-<body>
+<body class="p-4 text-white">
 
-    <!-- TRANG CHỌN UNIT -->
-    <div id="unit-selection" class="glass">
-        <h1 class="text-2xl font-bold mb-6">Hello Bro Thiện</h1>
-        <button onclick="loadUnit('unit3')">🚀 Unit 3: Fun and Games</button>
+    <!-- Glowing Blobs tạo hiệu ứng khúc xạ ánh sáng -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- 1. TRANG CHỌN UNIT -->
+    <div id="unit-selection" class="glass-panel w-full max-w-md p-8 rounded-3xl text-center relative transition-all duration-500">
+        <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-cyan-400 uppercase bg-cyan-500/10 rounded-full border border-cyan-500/20">
+            English B1 Hub
+        </div>
+        <h1 class="text-3xl font-extrabold mb-2 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
+            Chào Bro Thiện! ⚡
+        </h1>
+        <p class="text-slate-400 text-sm mb-8">Hệ thống từ vựng & kiểm tra phát âm chuẩn</p>
+
+        <div class="space-y-4">
+            <button onclick="loadUnit('unit3')" class="glass-btn w-full p-4 rounded-2xl font-bold text-left flex items-center justify-between group">
+                <span class="flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center text-lg shadow-lg shadow-pink-500/30">🎯</span>
+                    <div>
+                        <div class="text-white font-bold group-hover:text-cyan-300 transition">Unit 3: Fun and Games</div>
+                        <div class="text-xs text-slate-400">38 từ vựng & cấu trúc</div>
+                    </div>
+                </span>
+                <span class="text-slate-400 group-hover:translate-x-1 transition-transform">➔</span>
+            </button>
+        </div>
     </div>
 
-    <!-- GIAO DIỆN HỌC -->
-    <div id="learning-app" class="glass hidden">
-        <h2 id="unit-title" class="text-xl font-semibold mb-4"></h2>
-        
-        <div id="flashcard" class="h-32 flex items-center justify-center bg-white/20 rounded-xl mb-6 cursor-pointer">
-            <p id="word-display" class="text-2xl font-bold">Word</p>
+    <!-- 2. GIAO DIỆN HỌC & TEST -->
+    <div id="learning-app" class="glass-panel w-full max-w-md p-6 rounded-3xl relative hidden transition-all duration-500">
+        <!-- Header nhỏ -->
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+            <span id="unit-title" class="font-bold text-lg text-cyan-400">Unit 3</span>
+            <button onclick="location.reload()" class="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition">
+                ✕ Thoát
+            </button>
         </div>
 
-        <div id="options-grid" class="grid grid-cols-2 gap-3"></div>
-        
-        <button onclick="checkSpeaking()" class="bg-green-500/30 mt-4">🎙️ Check Phát Âm</button>
-        <button onclick="location.reload()" class="text-white/70 text-sm underline mt-4">Quay lại chọn Unit</button>
+        <!-- Thẻ lật Flashcard 3D -->
+        <div class="perspective h-48 mb-6 cursor-pointer" onclick="flipCard()">
+            <div id="card-inner" class="card-inner relative w-full h-full">
+                <!-- Mặt trước (Word) -->
+                <div class="front absolute inset-0 glass-panel rounded-2xl p-6 flex flex-col items-center justify-center border-white/20 bg-gradient-to-br from-white/10 to-transparent">
+                    <span class="text-xs text-slate-400 uppercase tracking-widest mb-2">Từ vựng</span>
+                    <span id="word-display" class="text-3xl font-extrabold text-white tracking-wide">Word</span>
+                    <span class="text-[11px] text-cyan-300 mt-3 opacity-75">↻ Chạm để lật thẻ</span>
+                </div>
+                <!-- Mặt sau (Meaning) -->
+                <div class="back absolute inset-0 glass-panel rounded-2xl p-6 flex flex-col items-center justify-center border-cyan-500/30 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 shadow-lg shadow-cyan-500/10">
+                    <span class="text-xs text-cyan-300 uppercase tracking-widest mb-2">Ý nghĩa</span>
+                    <span id="meaning-display" class="text-2xl font-bold text-white text-center">Meaning</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 Đáp án trắc nghiệm -->
+        <div class="mb-6">
+            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Chọn đáp án đúng:</div>
+            <div id="options-grid" class="grid grid-cols-2 gap-3">
+                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 1</button>
+                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 2</button>
+                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 3</button>
+                <button class="glass-btn p-3 rounded-xl text-sm font-semibold text-slate-200">Đáp án 4</button>
+            </div>
+        </div>
+
+        <!-- Nút check phát âm & Nút Next -->
+        <div class="flex gap-3 pt-2">
+            <button onclick="checkSpeaking()" class="glass-btn flex-1 py-3.5 px-4 rounded-xl font-bold bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-emerald-500/30 hover:border-emerald-500 flex items-center justify-center gap-2 text-emerald-300 shadow-lg shadow-emerald-500/10">
+                <span class="text-lg">🎙️</span> Đọc thử
+            </button>
+            <button onclick="nextWord()" class="glass-btn py-3.5 px-6 rounded-xl font-bold bg-white/10 hover:bg-white/20 text-white">
+                Tiếp ➔
+            </button>
+        </div>
     </div>
 
+    <!-- Nhúng file logic -->
     <script src="main.js"></script>
     <script>
         function loadUnit(unitName) {
+            // Hiệu ứng chuyển cảnh mượt mà
+            document.getElementById('unit-selection').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('unit-selection').classList.add('hidden');
+                const app = document.getElementById('learning-app');
+                app.classList.remove('hidden');
+                app.style.opacity = '0';
+                setTimeout(() => app.style.opacity = '1', 50);
+            }, 300);
+
+            // Tải file data
             const script = document.createElement('script');
             script.src = `data/${unitName}.js`;
             script.onload = () => {
-                document.getElementById('unit-selection').classList.add('hidden');
-                document.getElementById('learning-app').classList.remove('hidden');
-                
-                // Khởi tạo (Bro nhớ viết hàm initUnit trong main.js)
                 const data = window[`${unitName}Data`];
-                document.getElementById('unit-title').innerText = data.title;
-                document.getElementById('word-display').innerText = data.topic_vocabulary[0].word;
+                if(data) {
+                    document.getElementById('unit-title').innerText = data.title;
+                    if(typeof initUnit === 'function') initUnit(data);
+                }
+            };
+            script.onerror = () => {
+                // Dữ liệu mẫu tạm thời nếu chưa có file unit3.js để Bro test giao diện ngay
+                document.getElementById('word-display').innerText = "board game";
+                document.getElementById('meaning-display').innerText = "trò chơi bàn cờ";
             };
             document.head.appendChild(script);
+        }
+
+        function flipCard() {
+            document.getElementById('card-inner').classList.toggle('flipped');
+        }
+
+        function nextWord() {
+            if(typeof loadNextQuestion === 'function') loadNextQuestion();
+            // Reset lại mặt thẻ trước khi chuyển từ mới
+            document.getElementById('card-inner').classList.remove('flipped');
         }
     </script>
 </body>
